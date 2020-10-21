@@ -2,6 +2,7 @@
   <div class="component-table">
     <div class="operation">
       <div class="table-name">
+        <i class="icon el-icon-s-unfold" />
         数据列表
       </div>
       <el-button-group>
@@ -70,7 +71,13 @@ export default {
     .table-name{
       font-size: 14px;
       font-weight: 700;
+      display: flex;
+      align-items: center;
       color: #909399;
+      .icon{
+        margin-right: 4px;
+        font-size: 18px;
+      }
     }
   }
   .page{
