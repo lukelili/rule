@@ -17,7 +17,7 @@ module.exports = {
     },
     proxy: {
       '/adminserver': {
-        target: 'http://localhost:3030',
+        target: 'http://192.168.1.234:3402',
         // target: 'http://192.168.1.234:3402',
         changeOrigin: true,
         ws: true,

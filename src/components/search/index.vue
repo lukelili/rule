@@ -59,20 +59,20 @@ export default {
     },
     // 重置按钮 //就因为后端要拆解日期参数 我要写这么多代码
     btnReset() {
+      this.date = {}
       const filter = ['datePicker']
+      // 在表单配置项过滤出日期的表单
       const searchItem = this.searchItem.filter(item => filter.includes(item.type))
-      const maps = searchItem.map(item => item.split)
-      let arr = []
+      // 二维数组 转换 一维数组
+      const maps = searchItem.reduce((old, val) => old.split.concat(val.split))
+      // 再遍历 取出参数对应的字段 清空
       maps.forEach(item => {
-        arr = arr.concat(item)
-      })
-      arr.forEach(item => {
         if (Object.prototype.hasOwnProperty.call(this.searchData, item)) {
           this.searchData[item] = ''
         }
       })
-      this.date = {}
       this.$refs.searchForm.resetFields()
+      this.btnSearch()
     },
     // 日期选择
     dateChange(date, item) {

@@ -2,7 +2,6 @@
   <div class="container-table">
     <v-search :search-item="searchItem" :search-data="searchData" @handleSearch="getTableList" />
     <v-table :options="tableOptions" />
-    <!-- <el-button @click="handlerDetails">详情</el-button> -->
   </div>
 </template>
 <script>
@@ -72,6 +71,188 @@ export default {
           { label: '客户账号', field: 'accountNumber' }
         ],
         tableList: [
+          {
+            orderId: '12454621',
+            accountId: '5464646464654',
+            type: '新贷',
+            fullName: '李成儒',
+            accountNumber: '15811483224'
+          },
+          {
+            orderId: '12454621',
+            accountId: '5464646464654',
+            type: '新贷',
+            fullName: '李成儒',
+            accountNumber: '15811483224'
+          },
+          {
+            orderId: '12454621',
+            accountId: '5464646464654',
+            type: '新贷',
+            fullName: '李成儒',
+            accountNumber: '15811483224'
+          },
+          {
+            orderId: '12454621',
+            accountId: '5464646464654',
+            type: '新贷',
+            fullName: '李成儒',
+            accountNumber: '15811483224'
+          },
+          {
+            orderId: '12454621',
+            accountId: '5464646464654',
+            type: '新贷',
+            fullName: '李成儒',
+            accountNumber: '15811483224'
+          },
+          {
+            orderId: '12454621',
+            accountId: '5464646464654',
+            type: '新贷',
+            fullName: '李成儒',
+            accountNumber: '15811483224'
+          },
+          {
+            orderId: '12454621',
+            accountId: '5464646464654',
+            type: '新贷',
+            fullName: '李成儒',
+            accountNumber: '15811483224'
+          },
+          {
+            orderId: '12454621',
+            accountId: '5464646464654',
+            type: '新贷',
+            fullName: '李成儒',
+            accountNumber: '15811483224'
+          },
+          {
+            orderId: '12454621',
+            accountId: '5464646464654',
+            type: '新贷',
+            fullName: '李成儒',
+            accountNumber: '15811483224'
+          },
+          {
+            orderId: '12454621',
+            accountId: '5464646464654',
+            type: '新贷',
+            fullName: '李成儒',
+            accountNumber: '15811483224'
+          },
+          {
+            orderId: '12454621',
+            accountId: '5464646464654',
+            type: '新贷',
+            fullName: '李成儒',
+            accountNumber: '15811483224'
+          },
+          {
+            orderId: '12454621',
+            accountId: '5464646464654',
+            type: '新贷',
+            fullName: '李成儒',
+            accountNumber: '15811483224'
+          },
+          {
+            orderId: '12454621',
+            accountId: '5464646464654',
+            type: '新贷',
+            fullName: '李成儒',
+            accountNumber: '15811483224'
+          },
+          {
+            orderId: '12454621',
+            accountId: '5464646464654',
+            type: '新贷',
+            fullName: '李成儒',
+            accountNumber: '15811483224'
+          },
+          {
+            orderId: '12454621',
+            accountId: '5464646464654',
+            type: '新贷',
+            fullName: '李成儒',
+            accountNumber: '15811483224'
+          },
+          {
+            orderId: '12454621',
+            accountId: '5464646464654',
+            type: '新贷',
+            fullName: '李成儒',
+            accountNumber: '15811483224'
+          },
+          {
+            orderId: '12454621',
+            accountId: '5464646464654',
+            type: '新贷',
+            fullName: '李成儒',
+            accountNumber: '15811483224'
+          },
+          {
+            orderId: '12454621',
+            accountId: '5464646464654',
+            type: '新贷',
+            fullName: '李成儒',
+            accountNumber: '15811483224'
+          },
+          {
+            orderId: '12454621',
+            accountId: '5464646464654',
+            type: '新贷',
+            fullName: '李成儒',
+            accountNumber: '15811483224'
+          },
+          {
+            orderId: '12454621',
+            accountId: '5464646464654',
+            type: '新贷',
+            fullName: '李成儒',
+            accountNumber: '15811483224'
+          },
+          {
+            orderId: '12454621',
+            accountId: '5464646464654',
+            type: '新贷',
+            fullName: '李成儒',
+            accountNumber: '15811483224'
+          },
+          {
+            orderId: '12454621',
+            accountId: '5464646464654',
+            type: '新贷',
+            fullName: '李成儒',
+            accountNumber: '15811483224'
+          },
+          {
+            orderId: '12454621',
+            accountId: '5464646464654',
+            type: '新贷',
+            fullName: '李成儒',
+            accountNumber: '15811483224'
+          },
+          {
+            orderId: '12454621',
+            accountId: '5464646464654',
+            type: '新贷',
+            fullName: '李成儒',
+            accountNumber: '15811483224'
+          },
+          {
+            orderId: '12454621',
+            accountId: '5464646464654',
+            type: '新贷',
+            fullName: '李成儒',
+            accountNumber: '15811483224'
+          },
+          {
+            orderId: '12454621',
+            accountId: '5464646464654',
+            type: '新贷',
+            fullName: '李成儒',
+            accountNumber: '15811483224'
+          },
           {
             orderId: '12454621',
             accountId: '5464646464654',

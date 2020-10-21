@@ -1,13 +1,16 @@
 <template>
-  <div class="table">
+  <div class="component-table">
     <div class="operation">
+      <div class="table-name">
+        数据列表
+      </div>
       <el-button-group>
-        <el-button icon="el-icon-circle-plus-outline" type="primary">添加</el-button>
-        <el-button icon="el-icon-delete" type="danger">删除</el-button>
-        <el-button icon="el-icon-refresh" type="success">刷新</el-button>
+        <el-button icon="el-icon-circle-plus-outline" type="default">添加</el-button>
+        <el-button icon="el-icon-delete" type="default">删除</el-button>
+        <el-button icon="el-icon-refresh" type="default">刷新</el-button>
       </el-button-group>
     </div>
-    <el-table v-loading="tableOption.loading" :data="tableOption.tableList" border :header-cell-style="{ backgroundColor:'#F5F7FA' }">
+    <el-table v-loading="tableOption.loading" :data="tableOption.tableList" height="500" border :header-cell-style="{ backgroundColor:'#F5F7FA' }">
       <template v-for="item in tableOption.tHead">
         <!-- 按钮组 -->
         <el-table-column v-if="item.columnType === 'slot'" :key="item.field" :label="item.label" :prop="item.field">
@@ -48,27 +51,43 @@ export default {
   },
   mounted() {
     lteration(this.options, this.tableOption)
-    console
   }
 }
 </script>
 <style lang="scss" scoped>
-.table{
-  height: 100%;
+.component-table{
   display: flex;
   flex-direction: column;
-  // background: #ccc;
-  .el-table{
-    flex: 1;
-  }
   .operation{
-    text-align: right;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    border: 1px solid #EBEEF5;
+    background-color: rgb(245, 247, 250);
+    border-bottom: none;
+    .table-name{
+      font-size: 14px;
+      font-weight: 700;
+      color: #909399;
+    }
   }
   .page{
     padding-top: 15px;
     text-align: right;
     .el-pagination{
       padding: 2px 0;
+    }
+  }
+}
+</style>
+<style lang="scss">
+.el-table{
+  flex: none;
+  .el-table__header-wrapper{
+    .gutter{
+      background-color: rgb(245, 247, 250);
     }
   }
 }
