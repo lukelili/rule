@@ -1,7 +1,14 @@
 <template>
   <div class="container-table">
     <v-search :search-item="searchItem" :search-data="searchData" @handleSearch="getTableList" />
-    <v-table :options="tableOptions" />
+    <v-table :options="tableOptions">
+      <template v-slot:operation="{ data }">
+        <el-button type="success" size="mini" plain @click="btnDetails(data)">详情</el-button>
+      </template>
+    </v-table>
+    <v-dialog ref="dialog" :visible.sync="visible" title="添加" @handleConfirm="addTableList">
+      <v-form ref="form" :form-item="formItem" :form-data="formData" />
+    </v-dialog>
   </div>
 </template>
 <script>
@@ -63,12 +70,14 @@ export default {
         }
       ],
       tableOptions: {
+        name: '客户列表',
         tHead: [
           { label: '订单编号', field: 'orderId' },
           { label: '客户编号', field: 'accountId' },
           { label: '类型', field: 'type' },
           { label: '客户姓名', field: 'fullName' },
-          { label: '客户账号', field: 'accountNumber' }
+          { label: '客户账号', field: 'accountNumber' },
+          { label: '操作', slotName: 'operation', align: 'center' }
         ],
         tableList: [
           {
@@ -261,17 +270,70 @@ export default {
             accountNumber: '15811483224'
           }
         ]
-      }
+      },
+      visible: true,
+      formData: {
+        orderId: '',
+        accountId: '',
+        type: '',
+        fullName: '',
+        phone: ''
+      },
+      formItem: [
+        {
+          type: 'input',
+          label: '订单编号',
+          field: 'orderId'
+        },
+        {
+          type: 'input',
+          label: '客户编号',
+          field: 'accountId'
+        },
+        {
+          type: 'select',
+          label: '订单类型',
+          field: 'type',
+          data: [],
+          props: {
+            label: 'name',
+            value: 'id'
+          }
+        },
+        {
+          type: 'input',
+          label: '客户姓名',
+          field: 'fullName'
+        },
+        {
+          type: 'input',
+          label: '客户账号',
+          field: 'phone'
+        }
+      ]
     }
   },
   mounted() {
+    setTimeout(() => {
+      this.formItem[2].data = [
+        { name: '新贷', id: 0 },
+        { name: '复贷', id: 1 }
+      ]
+    }, 4000)
   },
   methods: {
     getTableList() {
       console.log(this.searchData)
     },
-    handlerDetails() {
-      this.$router.push({ path: '/customer/customerDetails' })
+    btnDetails(data) {
+      // this.$router.push({ path: '/customer/customerDetails' })
+    },
+    // 添加表格列表
+    addTableList() {
+      this.$refs.form.submit()
+      setTimeout(() => {
+        this.$refs.dialog.confirmLoding = false
+      }, 1000)
     }
   }
 }

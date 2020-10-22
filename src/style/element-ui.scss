@@ -1,0 +1,32 @@
+.el-dialog {
+	transform: none;
+	left: 0;
+	position: relative;
+	margin: 0 auto;
+	// 弹出框头部
+	.el-dialog__header {
+			padding: 15px 20px;
+			text-align: left;
+			border-bottom: 1px solid #eee;
+	}
+	// 弹出框主体
+	.el-dialog__body {
+			padding: 0;
+			// 解决弹框下select 清除icon的垂直居中问题
+			.el-select .el-input__icon{
+				line-height: 33px;
+			}
+      .model{
+				padding: 15px;
+				padding-bottom: 0;
+        text-align: left;
+      }
+	}
+  // 弹出框底部
+  .el-dialog__footer{
+    padding: 0 20px 15px;
+    .dialog-footer{
+      display: inline-block;
+    }
+  }
+}

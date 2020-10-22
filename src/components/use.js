@@ -1,6 +1,11 @@
 import Vue from 'vue'
-import search from '@c/search/index.vue'
-import table from '@c/table/index.vue'
 
-Vue.component('v-search', search)
+import form from '@c/form/index.vue'
+import table from '@c/table/index.vue'
+import search from '@c/search/index.vue'
+import dialog from '@c/dialog/index.vue'
+
+Vue.component('v-form', form)
 Vue.component('v-table', table)
+Vue.component('v-search', search)
+Vue.component('v-dialog', dialog)
