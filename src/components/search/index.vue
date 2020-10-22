@@ -1,7 +1,7 @@
 <template>
-  <el-form ref="searchForm" :inline="true" :model="searchData" class="demo-form-inline">
+  <el-form ref="searchForm" :inline="true" :model="searchData" class="search-form-inline">
     <template v-for="(item, index) in searchItem">
-      <el-form-item :key="index" :label="!item.hideLabel ? item.label : ''" :prop="item.field">
+      <el-form-item :key="index" :label="item.showLabel ? item.label : ''" :prop="item.field">
         <!-- 输入框 -->
         <el-input v-if="item.type === 'input'" v-model="searchData[item.field]" :placeholder="'请输入' + item.label" :clearable="!!item.clearable" />
         <!-- 下拉选择器 -->
@@ -26,7 +26,7 @@ export default {
      * searchItem数组里每个对象代表一个表单 根据type来显示表单的类型 []里的代表该属性适用与哪种类型的表单
      * @param { type } String select/input/datePicker
      * @param { label } String 表单名                   [select/input/datePicker]
-     * @param { hideLabel } Boolean 隐藏表单名称        [select/input/datePicker]
+     * @param { showLabel } Boolean 显示表单名称        [select/input/datePicker]
      * @param { field } String 表单属性                 [select/input/datePicker]
      * @param { clearable } Boolean 清空表单内容        [select/input/datePicker]
      * @param { props: {
@@ -60,11 +60,17 @@ export default {
     // 重置按钮 //就因为后端要拆解日期参数 我要写这么多代码
     btnReset() {
       this.date = {}
+      let maps = []
       const filter = ['datePicker']
       // 在表单配置项过滤出日期的表单
       const searchItem = this.searchItem.filter(item => filter.includes(item.type))
       // 二维数组 转换 一维数组
-      const maps = searchItem.reduce((old, val) => old.split.concat(val.split))
+      if (searchItem.length > 1) {
+        maps = searchItem.reduce((old, val) => old.split.concat(val.split))
+      }
+      if (searchItem.length && searchItem.length === 1) {
+        maps = searchItem[0].split
+      }
       // 再遍历 取出参数对应的字段 清空
       maps.forEach(item => {
         if (Object.prototype.hasOwnProperty.call(this.searchData, item)) {
@@ -91,5 +97,10 @@ export default {
 <style lang="scss">
 .el-date-editor{
   width: 230px !important;
+}
+.search-form-inline{
+  .el-form-item{
+    margin-bottom: 10px !important;
+  }
 }
 </style>

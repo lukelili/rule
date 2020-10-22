@@ -13,7 +13,7 @@
       </el-button-group>
     </div>
     <!-- 表格 -->
-    <el-table v-loading="tableOption.loading" :data="tableOption.tableList" height="500" border :header-cell-style="{ backgroundColor:'#F5F7FA' }">
+    <el-table v-loading="tableOption.loading" :data="tableOption.tableList" :height="tableHeight" border :header-cell-style="{ backgroundColor:'#F5F7FA' }">
       <template v-for="item in tableOption.tHead">
         <template v-if="!item.hidden">
           <!-- 插槽 -->
@@ -55,6 +55,7 @@ export default {
   },
   data() {
     return {
+      tableHeight: window.innerHeight - 200,
       tableOption: {
         name: '数据列表',
         /** tHead 是数组对象 每个对象可配置以下这些参数
@@ -72,7 +73,12 @@ export default {
     }
   },
   mounted() {
+    window.addEventListener('resize', () => {
+      this.tableHeight = window.innerHeight - 200
+    })
     Lteration(this.options, this.tableOption)
+  },
+  methods: {
   }
 }
 </script>
@@ -80,12 +86,13 @@ export default {
 .component-table{
   display: flex;
   flex-direction: column;
+  flex: 1;
   .operation{
     height: 50px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 15px;
+    padding: 0 10px;
     border: 1px solid #EBEEF5;
     background-color: rgb(245, 247, 250);
     border-bottom: none;
@@ -102,7 +109,7 @@ export default {
     }
   }
   .page{
-    padding-top: 15px;
+    padding-top: 10px;
     text-align: right;
     .el-pagination{
       padding: 2px 0;

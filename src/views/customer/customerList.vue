@@ -61,12 +61,8 @@ export default {
         {
           type: 'datePicker',
           label: '审核时间',
+          showLabel: true,
           split: ['checkStarTime', 'checkEndTime']
-        },
-        {
-          type: 'datePicker',
-          label: '注册时间',
-          split: ['regStartTime', 'regEndTime']
         }
       ],
       tableOptions: {
@@ -271,7 +267,7 @@ export default {
           }
         ]
       },
-      visible: true,
+      visible: false,
       formData: {
         orderId: '',
         accountId: '',

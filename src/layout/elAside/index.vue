@@ -1,5 +1,5 @@
 <template>
-  <el-aside width="240px">
+  <el-aside width="200px">
     <el-menu :default-active="activeIndex" class="el-menu-demo" mode="vertical" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" router @select="handleSelect">
       <template v-for="route in routes">
         <el-submenu :key="route.path" :index="route.path">

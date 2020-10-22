@@ -8,7 +8,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './style/index.scss'
 Vue.use(ElementUI, {
-  size: 'small'
+  size: 'mini'
 })
 
 new Vue({

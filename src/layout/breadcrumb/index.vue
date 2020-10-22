@@ -22,7 +22,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .el-breadcrumb{
-  padding: 15px;
+  padding: 15px 10px;
   border-bottom: 1px solid #eee;
   background-color: #fff;
 }
