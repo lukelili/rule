@@ -27,7 +27,7 @@ export default {
      * @param { slotName } String 插槽名 当type值为: slot 需传入slotName
      * @param { field } String 字段名
      * @param { hidden } Boolean 隐藏表单 默认值: false
-     * @param { props } Object select 数据选项 具体前往select组件查看
+     * @param { props } Object select 数据选项 具体配置前往select组件查看
      * **/
     formItem: {
       type: Array,

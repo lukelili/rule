@@ -35,10 +35,8 @@ export default {
       searchData: {
         type: '',
         accountId: '',
-        checkStarTime: '',
-        checkEndTime: '',
-        regStartTime: '',
-        regEndTime: '',
+        checkeTime: '',
+        year: '',
         pageSize: 10,
         pageNumber: 1
       },
@@ -62,7 +60,13 @@ export default {
           type: 'datePicker',
           label: '审核时间',
           showLabel: true,
-          split: ['checkStarTime', 'checkEndTime']
+          field: 'checkeTime'
+        },
+        {
+          type: 'datePicker',
+          label: '年度注册数',
+          field: 'year',
+          dateType: 'year'
         }
       ],
       tableOptions: {

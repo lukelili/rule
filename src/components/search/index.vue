@@ -5,12 +5,9 @@
         <!-- 输入框 -->
         <el-input v-if="item.type === 'input'" v-model="searchData[item.field]" :placeholder="'请输入' + item.label" :clearable="!!item.clearable" />
         <!-- 下拉选择器 -->
-        <el-select v-if="item.type === 'select'" v-model="searchData[item.field]" :placeholder="'请选择' + item.label" :clearable="!!item.clearable">
-          <el-option label="全部" :value="null" />
-          <el-option v-for="select in item.data" :key="select.id" :label="select.label" :value="select.value" />
-        </el-select>
+        <v-select v-if="item.type === 'select'" :select-item="item" :select-data="searchData" />
         <!-- 日期范围 -->
-        <el-date-picker v-if="item.type === 'datePicker'" v-model="date['date'+index]" type="daterange" value-format="yy-mm-dd" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" @change="dateChange($event, item)" />
+        <date-picker v-if="item.type === 'datePicker'" :date-item="item" :date-data="searchData" />
       </el-form-item>
     </template>
     <el-form-item>
@@ -20,21 +17,19 @@
   </el-form>
 </template>
 <script>
+import VSelect from '@c/select/'
+import datePicker from '@c/datePicker/'
 export default {
+  components: { VSelect, datePicker },
   props: {
     /**
      * searchItem数组里每个对象代表一个表单 根据type来显示表单的类型 []里的代表该属性适用与哪种类型的表单
      * @param { type } String select/input/datePicker
-     * @param { label } String 表单名                   [select/input/datePicker]
-     * @param { showLabel } Boolean 显示表单名称        [select/input/datePicker]
-     * @param { field } String 表单属性                 [select/input/datePicker]
-     * @param { clearable } Boolean 清空表单内容        [select/input/datePicker]
-     * @param { props: {
-     *                  label: 'label',
-     *                  value: 'value'
-     *                }
-     *        } Object 定义数据的字段名 默认是label/value [select]
-     * @param { split } Array 长度为2的日期范围 起始时间字段 和 结束时间字段 [datePicker]
+     * @param { label } String 表单名
+     * @param { showLabel } Boolean 显示表单名称
+     * @param { field } String 表单属性
+     * @param { clearable } Boolean 清空表单内容
+     * @param { props } Object 定义数据的字段名 数据选项 具体配置前往select组件查看
     **/
     searchItem: {
       type: Array,
@@ -59,37 +54,13 @@ export default {
     },
     // 重置按钮 //就因为后端要拆解日期参数 我要写这么多代码
     btnReset() {
-      this.date = {}
-      let maps = []
-      const filter = ['datePicker']
-      // 在表单配置项过滤出日期的表单
-      const searchItem = this.searchItem.filter(item => filter.includes(item.type))
-      // 二维数组 转换 一维数组
-      if (searchItem.length > 1) {
-        maps = searchItem.reduce((old, val) => old.split.concat(val.split))
-      }
-      if (searchItem.length && searchItem.length === 1) {
-        maps = searchItem[0].split
-      }
-      // 再遍历 取出参数对应的字段 清空
-      maps.forEach(item => {
-        if (Object.prototype.hasOwnProperty.call(this.searchData, item)) {
-          this.searchData[item] = ''
-        }
-      })
       this.$refs.searchForm.resetFields()
+      // for (const key in this.searchData) {
+      //   this.searchData[key] = ''
+      // }
+      // this.searchData.pageSize = 10
+      // this.searchData.pageNumber = 1
       this.btnSearch()
-    },
-    // 日期选择
-    dateChange(date, item) {
-      // date是范围日期 item.split是数组 包含长度为2的两个字符串
-      if (date !== null && (item.split && item.split.length === 2)) {
-        this.searchData[item.split[0]] = date[0]
-        this.searchData[item.split[1]] = date[1]
-      } else {
-        this.searchData[item.split[0]] = ''
-        this.searchData[item.split[1]] = ''
-      }
     }
   }
 }

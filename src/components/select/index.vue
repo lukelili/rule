@@ -70,9 +70,9 @@ export default {
       selectItem.data.length ? this.selectLoading = false : this.selectLoading = true
       // 替换默认的配置
       Lteration(selectItem, defaultOption)
-      // 给数据加个唯一标识
       this.dataMark(defaultOption.data)
     },
+    // 给数据加个唯一标识
     dataMark(data) {
       data.forEach((item, index) => {
         if (!item.id) item.mark = 'select' + index
