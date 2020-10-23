@@ -32,6 +32,7 @@ export default {
       }
     ]
     return {
+      // 搜索配置
       searchData: {
         type: '',
         accountId: '',
@@ -46,8 +47,8 @@ export default {
           label: '操作员',
           field: 'type',
           props: {
-            label: 'name',
-            value: 'key'
+            label: 'label',
+            value: 'value'
           },
           data: accountList
         },
@@ -69,6 +70,7 @@ export default {
           dateType: 'year'
         }
       ],
+      // 表格配置
       tableOptions: {
         name: '客户列表',
         tHead: [
@@ -271,6 +273,7 @@ export default {
           }
         ]
       },
+      // 详情配置
       visible: false,
       formData: {
         orderId: '',
@@ -314,6 +317,7 @@ export default {
     }
   },
   mounted() {
+    console.log(Array.isArray(null))
     setTimeout(() => {
       this.formItem[2].data = [
         { name: '新贷', id: 0 },
@@ -326,6 +330,7 @@ export default {
       console.log(this.searchData)
     },
     btnDetails(data) {
+      this.visible = true
       // this.$router.push({ path: '/customer/customerDetails' })
     },
     // 添加表格列表

@@ -1,7 +1,7 @@
 <template>
   <el-form ref="Form" :model="formData" label-width="100px">
     <template v-for="(item, index) in formItem">
-      <el-form-item :key="index" :label="!item.hideLabel ? item.label : ''" :prop="item.field">
+      <el-form-item :key="index" :label="!item.hideLabel ? item.label : ''" :rules="matchRules(item)" :prop="item.field">
         <template v-if="!item.hidden">
           <!-- 插槽 -->
           <slot v-if="item.type === 'slot'" :name="item.slotName" />
@@ -28,6 +28,8 @@ export default {
      * @param { field } String 字段名
      * @param { hidden } Boolean 隐藏表单 默认值: false
      * @param { props } Object select 数据选项 具体配置前往select组件查看
+     * @param { required } Boolean 是否为必填项 默认值: false
+     * @param { rules } Array 是数组
      * **/
     formItem: {
       type: Array,
@@ -47,6 +49,20 @@ export default {
       this.$refs.Form.validate(valid => {
         console.log(valid)
       })
+    },
+    matchRules(option) {
+      let rulesArray = []
+      const type = option.type
+      const label = option.label
+      const msg = type === 'input' ? '请输入' : '请选择'
+      const required = option.required
+      if (required) {
+        rulesArray.push({ required: true, message: msg + label })
+      }
+      // const rules = option.rules
+      // if (rules && Array.isArray(rules)) {
+
+      // }
     }
   }
 }
