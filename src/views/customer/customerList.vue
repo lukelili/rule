@@ -81,6 +81,32 @@ export default {
           { label: '客户账号', field: 'accountNumber' },
           { label: '操作', slotName: 'operation', align: 'center' }
         ],
+        operates: [
+          {
+            label: '添加',
+            type: 'default',
+            icon: 'el-icon-circle-plus-outline',
+            event: () => {
+              this.visible = true
+            }
+          },
+          {
+            label: '导出',
+            type: 'default',
+            icon: 'el-icon-download',
+            event: () => {
+              console.log('ss')
+            }
+          },
+          {
+            label: '删除',
+            type: 'default',
+            icon: 'el-icon-delete',
+            event: () => {
+              this.visible = true
+            }
+          }
+        ],
         tableList: [
           {
             orderId: '12454621',

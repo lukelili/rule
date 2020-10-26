@@ -7,13 +7,16 @@
         {{ tableOption.name }}
       </div>
       <el-button-group>
-        <el-button icon="el-icon-circle-plus-outline" type="default">添加</el-button>
-        <el-button icon="el-icon-delete" type="default">删除</el-button>
+        <template v-for="(item, index) in tableOption.operates">
+          <el-button :key="index" :icon="item.icon" :type="item.type" @click="operateEvent(item.event)">{{ item.label }}</el-button>
+        </template>
         <el-button icon="el-icon-refresh" type="default">刷新</el-button>
       </el-button-group>
     </div>
     <!-- 表格 -->
     <el-table v-loading="tableOption.loading" :data="tableOption.tableList" :height="tableHeight" border :header-cell-style="{ backgroundColor:'#F5F7FA' }">
+      <!-- 复选框 -->
+      <el-table-column v-if="tableOption.selection" type="selection" width="55" align="center" />
       <template v-for="item in tableOption.tHead">
         <template v-if="!item.hidden">
           <!-- 插槽 -->
@@ -58,7 +61,7 @@ export default {
       tableHeight: window.innerHeight - 200,
       tableOption: {
         name: '数据列表',
-        /** tHead 是数组对象 每个对象可配置以下这些参数
+        /** tHead 表头数组对象 每个对象包含以下配置参数
          * @param { label } String 表头名
          * @param { field } String 字段名
          * @param { slotName } String 插槽名
@@ -67,6 +70,16 @@ export default {
          * @param { align } String /left|center|right/
          * **/
         tHead: [],
+        // 复选框
+        selection: false,
+        /** operates 表格头部操作按钮数组对象 每个对象包含以下配置参数
+         * @param { label } String 按钮文字
+         * @param { type } String 按钮类型
+         * @param { icon } String 按钮图标
+         * @param { event } Function 事件
+         * **/
+        operates: [],
+        // 表格数据
         tableList: [],
         loading: false
       }
@@ -79,6 +92,9 @@ export default {
     Lteration(this.options, this.tableOption)
   },
   methods: {
+    operateEvent(event) {
+      if (event) event()
+    }
   }
 }
 </script>
