@@ -42,7 +42,7 @@ export default {
     })
   },
   mounted() {
-    console.log(this.btnLoginText)
+    
   },
   methods: {
     sunbmitEvent(form) {
