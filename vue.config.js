@@ -16,13 +16,12 @@ module.exports = {
       errors: true
     },
     proxy: {
-      '/adminserver': {
-        target: 'http://192.168.1.234:3402',
-        // target: 'http://192.168.1.234:3402',
+      '/admin': {
+        target: 'https://www.fastmock.site/mock/59d7586b5f8dc479f8769811c9386d70/admin',
         changeOrigin: true,
         ws: true,
         pathRewrite: {
-          '^/adminserver': '/'
+          '^/admin': '/'
         }
       }
     }

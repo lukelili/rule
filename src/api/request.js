@@ -1,7 +1,7 @@
 import axios from 'axios'
 import router from '@/router'
 import store from '@/store'
-import { getItem, removeItem } from '@/utils/storeage'
+import { getItem, removeItem } from '@/utils/storage'
 import { Message } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
