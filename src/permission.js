@@ -1,7 +1,7 @@
 import router from './router'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-import { setItem, getItem, removeItem } from '@/utils/storage'
+import { getItem } from '@/utils/storage'
 
 NProgress.configure({ showSpinner: false })
 // 可访问的白名单
@@ -10,6 +10,7 @@ router.beforeEach((to, from, next) => {
   NProgress.start()
   const hasToken = getItem('token')
   if (hasToken) {
+    console.log('我已经登录了')
   } else {
     if (whiteList.includes(to.path)) {
       next()

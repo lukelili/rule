@@ -1,7 +1,8 @@
 import { Login } from '@a/user'
-import { encrypt } from '@/utils/tools'
 import { Message } from 'element-ui'
-import { setItem, getItem, removeItem } from '@/utils/storage'
+// import { encrypt } from '@/utils/tools'
+// import { Message } from 'element-ui'
+// import { setItem, getItem, removeItem } from '@/utils/storage'
 
 const state = {
   roles: '',
@@ -16,12 +17,29 @@ const mutations = {
       state[key] = value
       // value && setItem(key, value)
     }
+  },
+  SET_STATUS() {
+
   }
 }
 const actions = {
   login({ commit }, data) {
-    console.log(Login)
-    console.log(setItem)
+    commit('SET_USERINFO', { key: 'btnLoading', value: true })
+    commit('SET_USERINFO', { key: 'btnLoginText', value: '拼命登录中...' })
+    Login(data).then(res => {
+      const { code, message } = res.data
+      if (code === 0) {
+        
+      } else {
+        Message.error(message)
+        commit('SET_USERINFO', { key: 'btnLoading', value: false })
+        commit('SET_USERINFO', { key: 'btnLoginText', value: '登录' })
+      }
+      console.log(res)
+    }).catch(() => {
+      commit('SET_USERINFO', { key: 'btnLoading', value: false })
+      commit('SET_USERINFO', { key: 'btnLoginText', value: '登录' })
+    })
   }
 }
 

@@ -5,9 +5,3 @@ import qs from 'qs'
 export function Login(param) {
   return request.post(`/login`, qs.parse(param))
 }
-
-// export default {
-//   Login: (param) => {
-//     return request.post(`/login`, qs.parse(param))
-//   }
-// }
