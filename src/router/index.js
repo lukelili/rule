@@ -6,6 +6,11 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    name: '登录',
+    path: '/login',
+    component: () => import('@/views/login/index.vue')
+  },
+  {
     sort: 1,
     level: '0',
     name: '入口文件',
