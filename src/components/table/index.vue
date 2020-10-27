@@ -3,7 +3,7 @@
     <!-- 头部 -->
     <div class="operation">
       <div class="table-name">
-        <i class="icon el-icon-s-unfold" />
+        <i class="iconfont icontable" />
         {{ tableOption.name }}
       </div>
       <el-button-group>
@@ -118,9 +118,10 @@ export default {
       display: flex;
       align-items: center;
       color: #909399;
-      .icon{
+      .iconfont{
+        margin-top: 1px;
         margin-right: 4px;
-        font-size: 18px;
+        font-size: 12px;
       }
     }
   }

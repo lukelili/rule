@@ -15,13 +15,14 @@ router.beforeEach(async(to, from, next) => {
       next({ path: '/' })
       NProgress.done()
     }
-    const hasAddRoutes = store.getters.addRoutes && store.getters.addRoutes.length
-    if (hasAddRoutes) next()
-    try {
-      const accessRoutes = await store.dispatch('permission/getMenuList')
-    } catch(error) {
+    next()
+    // const hasAddRoutes = store.getters.addRoutes && store.getters.addRoutes.length
+    // if (hasAddRoutes) next()
+    // try {
+    //   const accessRoutes = await store.dispatch('permission/getMenuList')
+    // } catch(error) {
 
-    }
+    // }
   } else {
     if (whiteList.includes(to.path)) {
       next()

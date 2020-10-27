@@ -1,9 +1,19 @@
+
 const state = {
   routes: [],
   addRoutes: []
 }
-const mutations = {}
-const actions = {}
+const mutations = {
+  SET_ROUTES(state, routes) {
+    state.addRoutes = routes
+    state.routes = routes
+  }
+}
+const actions = {
+  getMenuList({ commit }) {
+    console.log('ss')
+  }
+}
 export default {
   namespace: true,
   state,
