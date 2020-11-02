@@ -344,6 +344,7 @@ export default {
     }
   },
   mounted() {
+    console.log(customer.getTableList())
     console.log(Array.isArray(null))
     setTimeout(() => {
       this.formItem[2].data = [
