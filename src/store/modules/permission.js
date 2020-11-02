@@ -3,7 +3,9 @@ const state = {
   addRoutes: []
 }
 const mutations = {}
-const actions = {}
+const actions = {
+  getMenuList() {}
+}
 export default {
   namespace: true,
   state,

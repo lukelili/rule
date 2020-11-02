@@ -31,14 +31,14 @@
       </template>
     </el-table>
     <!-- 分页 -->
-    <div class="page">
+    <div v-if="tableOption.total" class="page">
       <el-pagination
         background
         :current-page="currentPage4"
         :page-sizes="[100, 200, 300, 400]"
         :page-size="100"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="400"
+        :total="tableOption.total"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
       />
@@ -61,6 +61,13 @@ export default {
       tableHeight: window.innerHeight - 200,
       tableOption: {
         name: '数据列表',
+        /** operates 表格头部操作按钮数组对象 每个对象包含以下配置参数
+         * @param { label } String 按钮文字
+         * @param { type } String 按钮类型
+         * @param { icon } String 按钮图标
+         * @param { event } Function 事件
+         * **/
+        operates: [],
         /** tHead 表头数组对象 每个对象包含以下配置参数
          * @param { label } String 表头名
          * @param { field } String 字段名
@@ -72,16 +79,11 @@ export default {
         tHead: [],
         // 复选框
         selection: false,
-        /** operates 表格头部操作按钮数组对象 每个对象包含以下配置参数
-         * @param { label } String 按钮文字
-         * @param { type } String 按钮类型
-         * @param { icon } String 按钮图标
-         * @param { event } Function 事件
-         * **/
-        operates: [],
         // 表格数据
         tableList: [],
-        loading: false
+        // 加载状态
+        loading: false,
+        total: 0
       }
     }
   },
@@ -92,8 +94,17 @@ export default {
     Lteration(this.options, this.tableOption)
   },
   methods: {
+    // 操作按钮事件
     operateEvent(event) {
       if (event) event()
+    },
+    // 页码
+    handleSizeChange(size) {
+      console.log(size)
+    },
+    // 翻页
+    handleCurrentChange(num) {
+      console.log(num)
     }
   }
 }

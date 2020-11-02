@@ -12,6 +12,7 @@
   </div>
 </template>
 <script>
+import customer from '@a/customer'
 export default {
   data() {
     const accountList = [

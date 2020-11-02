@@ -18,7 +18,8 @@ router.beforeEach(async(to, from, next) => {
     const hasAddRoutes = store.getters.addRoutes && store.getters.addRoutes.length
     if (hasAddRoutes) next()
     try {
-      const accessRoutes = await store.dispatch('permission/getMenuList')
+      next()
+      // const accessRoutes = await store.dispatch('permission/getMenuList')
     } catch(error) {
 
     }
