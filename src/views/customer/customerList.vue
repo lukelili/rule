@@ -108,197 +108,9 @@ export default {
             }
           }
         ],
-        tableList: [
-          {
-            orderId: '12454621',
-            accountId: '5464646464654',
-            type: '新贷',
-            fullName: '李成儒',
-            accountNumber: '15811483224'
-          },
-          {
-            orderId: '12454621',
-            accountId: '5464646464654',
-            type: '新贷',
-            fullName: '李成儒',
-            accountNumber: '15811483224'
-          },
-          {
-            orderId: '12454621',
-            accountId: '5464646464654',
-            type: '新贷',
-            fullName: '李成儒',
-            accountNumber: '15811483224'
-          },
-          {
-            orderId: '12454621',
-            accountId: '5464646464654',
-            type: '新贷',
-            fullName: '李成儒',
-            accountNumber: '15811483224'
-          },
-          {
-            orderId: '12454621',
-            accountId: '5464646464654',
-            type: '新贷',
-            fullName: '李成儒',
-            accountNumber: '15811483224'
-          },
-          {
-            orderId: '12454621',
-            accountId: '5464646464654',
-            type: '新贷',
-            fullName: '李成儒',
-            accountNumber: '15811483224'
-          },
-          {
-            orderId: '12454621',
-            accountId: '5464646464654',
-            type: '新贷',
-            fullName: '李成儒',
-            accountNumber: '15811483224'
-          },
-          {
-            orderId: '12454621',
-            accountId: '5464646464654',
-            type: '新贷',
-            fullName: '李成儒',
-            accountNumber: '15811483224'
-          },
-          {
-            orderId: '12454621',
-            accountId: '5464646464654',
-            type: '新贷',
-            fullName: '李成儒',
-            accountNumber: '15811483224'
-          },
-          {
-            orderId: '12454621',
-            accountId: '5464646464654',
-            type: '新贷',
-            fullName: '李成儒',
-            accountNumber: '15811483224'
-          },
-          {
-            orderId: '12454621',
-            accountId: '5464646464654',
-            type: '新贷',
-            fullName: '李成儒',
-            accountNumber: '15811483224'
-          },
-          {
-            orderId: '12454621',
-            accountId: '5464646464654',
-            type: '新贷',
-            fullName: '李成儒',
-            accountNumber: '15811483224'
-          },
-          {
-            orderId: '12454621',
-            accountId: '5464646464654',
-            type: '新贷',
-            fullName: '李成儒',
-            accountNumber: '15811483224'
-          },
-          {
-            orderId: '12454621',
-            accountId: '5464646464654',
-            type: '新贷',
-            fullName: '李成儒',
-            accountNumber: '15811483224'
-          },
-          {
-            orderId: '12454621',
-            accountId: '5464646464654',
-            type: '新贷',
-            fullName: '李成儒',
-            accountNumber: '15811483224'
-          },
-          {
-            orderId: '12454621',
-            accountId: '5464646464654',
-            type: '新贷',
-            fullName: '李成儒',
-            accountNumber: '15811483224'
-          },
-          {
-            orderId: '12454621',
-            accountId: '5464646464654',
-            type: '新贷',
-            fullName: '李成儒',
-            accountNumber: '15811483224'
-          },
-          {
-            orderId: '12454621',
-            accountId: '5464646464654',
-            type: '新贷',
-            fullName: '李成儒',
-            accountNumber: '15811483224'
-          },
-          {
-            orderId: '12454621',
-            accountId: '5464646464654',
-            type: '新贷',
-            fullName: '李成儒',
-            accountNumber: '15811483224'
-          },
-          {
-            orderId: '12454621',
-            accountId: '5464646464654',
-            type: '新贷',
-            fullName: '李成儒',
-            accountNumber: '15811483224'
-          },
-          {
-            orderId: '12454621',
-            accountId: '5464646464654',
-            type: '新贷',
-            fullName: '李成儒',
-            accountNumber: '15811483224'
-          },
-          {
-            orderId: '12454621',
-            accountId: '5464646464654',
-            type: '新贷',
-            fullName: '李成儒',
-            accountNumber: '15811483224'
-          },
-          {
-            orderId: '12454621',
-            accountId: '5464646464654',
-            type: '新贷',
-            fullName: '李成儒',
-            accountNumber: '15811483224'
-          },
-          {
-            orderId: '12454621',
-            accountId: '5464646464654',
-            type: '新贷',
-            fullName: '李成儒',
-            accountNumber: '15811483224'
-          },
-          {
-            orderId: '12454621',
-            accountId: '5464646464654',
-            type: '新贷',
-            fullName: '李成儒',
-            accountNumber: '15811483224'
-          },
-          {
-            orderId: '12454621',
-            accountId: '5464646464654',
-            type: '新贷',
-            fullName: '李成儒',
-            accountNumber: '15811483224'
-          },
-          {
-            orderId: '12454621',
-            accountId: '5464646464654',
-            type: '新贷',
-            fullName: '李成儒',
-            accountNumber: '15811483224'
-          }
-        ]
+        tableList: [],
+        total: 0,
+        loading: false
       },
       // 详情配置
       visible: false,
@@ -344,18 +156,22 @@ export default {
     }
   },
   mounted() {
-    console.log(customer.getTableList())
-    console.log(Array.isArray(null))
-    setTimeout(() => {
-      this.formItem[2].data = [
-        { name: '新贷', id: 0 },
-        { name: '复贷', id: 1 }
-      ]
-    }, 4000)
+    this.getTableList()
   },
   methods: {
     getTableList() {
-      console.log(this.searchData)
+      const tableOptions = this.tableOptions
+      tableOptions.loading = true
+      customer.list().then(res => {
+        tableOptions.loading = false
+        const { code, message, data } = res.data
+        if (code === 0) {
+          tableOptions.total = data.total
+          tableOptions.tableList = data.list
+        } else {
+          this.$message.error(message)
+        }
+      })
     },
     btnDetails(data) {
       this.visible = true

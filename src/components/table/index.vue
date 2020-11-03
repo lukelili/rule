@@ -83,17 +83,29 @@ export default {
         tableList: [],
         // 加载状态
         loading: false,
+        // 数据条数
         total: 0
       }
     }
   },
+  watch: {
+    'options.loading': {
+      handler(data) {
+        this.initOPtion()
+      }
+    }
+  },
   mounted() {
+    this.initOPtion()
     window.addEventListener('resize', () => {
       this.tableHeight = window.innerHeight - 200
     })
-    Lteration(this.options, this.tableOption)
   },
   methods: {
+    // 初始化配置参数
+    initOPtion() {
+      Lteration(this.options, this.tableOption)
+    },
     // 操作按钮事件
     operateEvent(event) {
       if (event) event()
