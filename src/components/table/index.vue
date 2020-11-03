@@ -34,11 +34,11 @@
     <div v-if="tableOption.total" class="page">
       <el-pagination
         background
-        :current-page="currentPage4"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
+        :current-page="page.pageNumber"
+        :page-sizes="[20, 40, 60, 100]"
+        :page-size="page.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="tableOption.total"
+        :total="100"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
       />
@@ -52,6 +52,10 @@ export default {
   mixins: [page],
   props: {
     options: {
+      type: Object,
+      default: () => {}
+    },
+    param: {
       type: Object,
       default: () => {}
     }
@@ -85,6 +89,10 @@ export default {
         loading: false,
         // 数据条数
         total: 0
+      },
+      page: {
+        pageNumber: 1,
+        pageSize: 10
       }
     }
   },
@@ -97,6 +105,7 @@ export default {
   },
   mounted() {
     this.initOPtion()
+    console.log(this.param)
     window.addEventListener('resize', () => {
       this.tableHeight = window.innerHeight - 200
     })
@@ -104,6 +113,7 @@ export default {
   methods: {
     // 初始化配置参数
     initOPtion() {
+      Lteration(this.param, this.page)
       Lteration(this.options, this.tableOption)
     },
     // 操作按钮事件
@@ -112,11 +122,13 @@ export default {
     },
     // 页码
     handleSizeChange(size) {
-      console.log(size)
+      this.param.pageSize = size
+      this.$emit('pageChange')
     },
     // 翻页
     handleCurrentChange(num) {
-      console.log(num)
+      this.param.pageNumber = num
+      this.$emit('pageChange')
     }
   }
 }

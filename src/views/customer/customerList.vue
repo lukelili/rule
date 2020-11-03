@@ -1,7 +1,7 @@
 <template>
   <div class="container-table">
     <v-search :search-item="searchItem" :search-data="searchData" @handleSearch="getTableList" />
-    <v-table :options="tableOptions">
+    <v-table :options="tableOptions" :param="searchData" @pageChange="getTableList">
       <template v-slot:operation="{ data }">
         <el-button type="success" size="mini" plain @click="btnDetails(data)">详情</el-button>
       </template>
@@ -39,8 +39,8 @@ export default {
         accountId: '',
         checkeTime: '',
         year: '',
-        pageSize: 10,
-        pageNumber: 1
+        pageNumber: 1,
+        pageSize: 10
       },
       searchItem: [
         {
