@@ -16,3 +16,13 @@ html,body{
     flex: 1;
   }
 }
+// 普通页面
+.container{
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+}
+.container-full{
+  flex: 1;
+  overflow-y: auto;
+}

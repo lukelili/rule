@@ -1,38 +1,56 @@
 <template>
-  <div class="home">
+  <div class="container">
+    <div class="banner"></div>
     <div class="tab-menu">
       <ul class="tab-wrap">
         <li v-for="item in tabs" :key="item.id" class="tab-item">
           <span>{{ item.label }}</span>
         </li>
       </ul>
-      <div class="operator">
+      <!-- <div class="operator">
         <el-button type="default">返回</el-button>
         <el-button type="default">刷新</el-button>
-      </div>
+      </div> -->
     </div>
+    <template v-for="item in tabs">
+      <components :is="item.component" :key="item.id" :title="item.label" />
+    </template>
   </div>
 </template>
 <script>
+import baseInfo from './components/baseInfo.vue'
+import workInfo from './components/workInfo.vue'
+import liveTest from './components/liveTest.vue'
+import ocrIdentify from './components/ocrIdentify.vue'
 export default {
+  components: {
+    baseInfo,
+    workInfo,
+    liveTest,
+    ocrIdentify
+  },
   data() {
     return {
       tabs: [
         {
           id: 1,
-          label: '基本信息'
+          label: '基本信息',
+          component: 'baseInfo'
         },
         {
           id: 2,
-          label: '工作信息'
+          label: '工作信息',
+          component: 'workInfo'
         },
         {
           id: 3,
-          label: '活体检测'
+          label: '活体检测',
+          component: 'liveTest'
         },
         {
           id: 4,
-          label: 'OCR识别信息'
+          label: 'OCR识别信息',
+          component: 'ocrIdentify'
         },
         {
           id: 5,
@@ -64,6 +82,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.banner{
+  height: 500px;
+  background-color: seagreen;
+}
 .tab-menu{
   position: relative;
   .tab-wrap{
@@ -73,6 +95,12 @@ export default {
     background-color: #eee;
     .tab-item{
       padding: 15px 20px;
+      cursor: pointer;
+      transition: .2s;
+      white-space: nowrap;
+      &:hover{
+        background-color: rgba(0,0,0,.2);
+      }
     }
   }
   .operator{
