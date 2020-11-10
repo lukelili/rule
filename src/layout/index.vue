@@ -4,7 +4,11 @@
     <el-container direction="vertical">
       <Breadcrumb />
       <keep-alive>
-        <router-view />
+        <div class="app-main">
+          <el-scrollbar ref="scrollBar" style="height: 100%">
+            <router-view />
+          </el-scrollbar>
+        </div>
       </keep-alive>
     </el-container>
   </el-container>
@@ -13,11 +17,20 @@
 import Breadcrumb from './breadcrumb/index.vue'
 import elAside from './elAside/index'
 export default {
-  components: { elAside, Breadcrumb }
+  components: { elAside, Breadcrumb },
+  mounted() {
+    const scrollEl = this.$refs.scrollBar.wrap
+    scrollEl.addEventListener('scroll', () => {
+      console.log(scrollEl.scrollTop)
+    })
+  }
 }
 </script>
 <style lang="scss" scoped>
 .el-container{
   height: inherit;
+  .app-main{
+    height: 100vh;
+  }
 }
 </style>

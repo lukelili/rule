@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <div class="banner"></div>
+  <div class="container-full">
+    <div class="banner">banner</div>
     <div class="tab-menu">
       <ul class="tab-wrap">
         <li v-for="item in tabs" :key="item.id" class="tab-item">
@@ -8,13 +8,15 @@
         </li>
       </ul>
       <!-- <div class="operator">
-        <el-button type="default">返回</el-button>
-        <el-button type="default">刷新</el-button>
-      </div> -->
+          <el-button type="default">返回</el-button>
+          <el-button type="default">刷新</el-button>
+        </div> -->
     </div>
-    <template v-for="item in tabs">
-      <components :is="item.component" :key="item.id" :title="item.label" />
-    </template>
+    <div class="container">
+      <template v-for="item in tabs">
+        <components :is="item.component" :key="item.id" :title="item.label" />
+      </template>
+    </div>
   </div>
 </template>
 <script>
@@ -84,7 +86,12 @@ export default {
 <style lang="scss" scoped>
 .banner{
   height: 500px;
+  text-align: center;
+  line-height: 500px;
+  font-size: 80px;
+  font-weight: bold;
   background-color: seagreen;
+  color: #fff;
 }
 .tab-menu{
   position: relative;
