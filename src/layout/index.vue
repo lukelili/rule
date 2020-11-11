@@ -21,7 +21,8 @@ export default {
   mounted() {
     const scrollEl = this.$refs.scrollBar.wrap
     scrollEl.addEventListener('scroll', () => {
-      console.log(scrollEl.scrollTop)
+      const top = scrollEl.scrollTop
+      this.$store.commit('SET_SCROLL_TOP', top)
     })
   }
 }
