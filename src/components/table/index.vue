@@ -31,14 +31,14 @@
       </template>
     </el-table>
     <!-- 分页 -->
-    <div class="page">
+    <div v-if="tableOption.total" class="page">
       <el-pagination
         background
-        :current-page="currentPage4"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
+        :current-page="page.pageNumber"
+        :page-sizes="[20, 40, 60, 100]"
+        :page-size="page.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="400"
+        :total="100"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
       />
@@ -54,6 +54,10 @@ export default {
     options: {
       type: Object,
       default: () => {}
+    },
+    param: {
+      type: Object,
+      default: () => {}
     }
   },
   data() {
@@ -61,6 +65,13 @@ export default {
       tableHeight: window.innerHeight - 200,
       tableOption: {
         name: '数据列表',
+        /** operates 表格头部操作按钮数组对象 每个对象包含以下配置参数
+         * @param { label } String 按钮文字
+         * @param { type } String 按钮类型
+         * @param { icon } String 按钮图标
+         * @param { event } Function 事件
+         * **/
+        operates: [],
         /** tHead 表头数组对象 每个对象包含以下配置参数
          * @param { label } String 表头名
          * @param { field } String 字段名
@@ -72,28 +83,52 @@ export default {
         tHead: [],
         // 复选框
         selection: false,
-        /** operates 表格头部操作按钮数组对象 每个对象包含以下配置参数
-         * @param { label } String 按钮文字
-         * @param { type } String 按钮类型
-         * @param { icon } String 按钮图标
-         * @param { event } Function 事件
-         * **/
-        operates: [],
         // 表格数据
         tableList: [],
-        loading: false
+        // 加载状态
+        loading: false,
+        // 数据条数
+        total: 0
+      },
+      page: {
+        pageNumber: 1,
+        pageSize: 10
+      }
+    }
+  },
+  watch: {
+    'options.loading': {
+      handler(data) {
+        this.initOPtion()
       }
     }
   },
   mounted() {
+    this.initOPtion()
+    console.log(this.param)
     window.addEventListener('resize', () => {
       this.tableHeight = window.innerHeight - 200
     })
-    Lteration(this.options, this.tableOption)
   },
   methods: {
+    // 初始化配置参数
+    initOPtion() {
+      Lteration(this.param, this.page)
+      Lteration(this.options, this.tableOption)
+    },
+    // 操作按钮事件
     operateEvent(event) {
       if (event) event()
+    },
+    // 页码
+    handleSizeChange(size) {
+      this.param.pageSize = size
+      this.$emit('pageChange')
+    },
+    // 翻页
+    handleCurrentChange(num) {
+      this.param.pageNumber = num
+      this.$emit('pageChange')
     }
   }
 }
