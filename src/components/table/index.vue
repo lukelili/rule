@@ -105,10 +105,12 @@ export default {
   },
   mounted() {
     this.initOPtion()
-    console.log(this.param)
     window.addEventListener('resize', () => {
       this.tableHeight = window.innerHeight - 200
     })
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize')
   },
   methods: {
     // 初始化配置参数

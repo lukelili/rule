@@ -4,30 +4,32 @@
     <div id="tab-placeholder" class="tab-placeholder">
       <div class="tab-menu" :class="{ 'tab-fixed': isFixed }">
         <ul class="tab-wrap">
-          <li v-for="item in tabs" :key="item.id" class="tab-item">
+          <li v-for="item in tabs" :key="item.id" class="tab-item" :class="{ 'actived': actived === item.component }" @click="handleTabPosition(item)">
             <span>{{ item.label }}</span>
           </li>
         </ul>
         <!-- <div class="operator">
-            <el-button type="default">返回</el-button>
-            <el-button type="default">刷新</el-button>
-          </div> -->
+          <el-button type="default">返回</el-button>
+          <el-button type="default">刷新</el-button>
+        </div> -->
       </div>
     </div>
     <div class="container">
       <template v-for="item in tabs">
-        <components :is="item.component" :key="item.id" :title="item.label" />
+        <components :is="item.component" :id="item.component" :key="item.id" :title="item.label" />
       </template>
     </div>
   </div>
 </template>
 <script>
+import tab from '@c/tab/'
 import baseInfo from './components/baseInfo.vue'
 import workInfo from './components/workInfo.vue'
 import liveTest from './components/liveTest.vue'
 import ocrIdentify from './components/ocrIdentify.vue'
 export default {
   components: {
+    tab,
     baseInfo,
     workInfo,
     liveTest,
@@ -35,6 +37,7 @@ export default {
   },
   data() {
     return {
+      actived: 'baseInfo',
       isFixed: false,
       tabs: [
         {
@@ -91,15 +94,36 @@ export default {
   },
   watch: {
     scrollTop(top) {
-      this.scrollMethods(top)
+      this.tabFixed()
     }
   },
+  mounted() {
+    this.tabActived()
+  },
   methods: {
-    scrollMethods() {
+    // 选项卡事件
+    handleTabPosition(curTab) {
+      const scrollWrap = document.querySelector('.el-scrollbar__wrap')
+      scrollWrap.scrollTop = curTab.offsetTop
+    },
+    // 吸顶
+    tabFixed() {
       const tabPlaceholder = document.querySelector('#tab-placeholder')
       if (!tabPlaceholder) return
       const tabOffsetTop = tabPlaceholder.offsetTop
       this.isFixed = this.scrollTop > tabOffsetTop
+      this.tabActived()
+    },
+    // 选项卡高亮
+    tabActived() {
+      const tabs = this.tabs
+      tabs.forEach(item => {
+        const nodes = document.querySelector(`#${item.component}`)
+        if (!nodes) return
+        const curTop = nodes.offsetTop
+        this.$set(item, 'offsetTop', curTop - 44)
+        if (this.scrollTop >= (curTop - 38)) this.actived = item.component
+      })
     }
   }
 }
@@ -113,6 +137,7 @@ export default {
   font-weight: bold;
   background-color: seagreen;
   color: #fff;
+  text-shadow: 1px 1px 1px #000;
 }
 .tab-placeholder{
   height: 46px;
@@ -126,14 +151,19 @@ export default {
       background-color: #f90;
       .tab-item{
         padding: 15px 20px;
-        cursor: pointer;
         transition: .2s;
+        font-size: 14px;
         white-space: nowrap;
         font-weight: bold;
+        cursor: pointer;
         &:hover{
           background-color: rgba(0,0,0,.2);
           color: #fff;
         }
+      }
+      .actived{
+        background-color: rgba(0,0,0,.2);
+        color: #fff;
       }
     }
     .operator{
