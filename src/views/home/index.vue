@@ -104,6 +104,7 @@ export default {
     // 选项卡事件
     handleTabPosition(curTab) {
       const scrollWrap = document.querySelector('.el-scrollbar__wrap')
+      this.tabActived()
       scrollWrap.scrollTop = curTab.offsetTop
     },
     // 吸顶
@@ -120,8 +121,9 @@ export default {
       tabs.forEach(item => {
         const nodes = document.querySelector(`#${item.component}`)
         if (!nodes) return
+        nodes.style = 'margin-bottom: 15px;'
         const curTop = nodes.offsetTop
-        this.$set(item, 'offsetTop', curTop - 44)
+        this.$set(item, 'offsetTop', curTop - 59)
         if (this.scrollTop >= (curTop - 38)) this.actived = item.component
       })
     }
@@ -140,7 +142,7 @@ export default {
   text-shadow: 1px 1px 1px #000;
 }
 .tab-placeholder{
-  height: 46px;
+  height: 44px;
   .tab-menu{
     width: 100%;
     position: relative;
