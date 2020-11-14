@@ -117,7 +117,7 @@ export default {
       formData: {
         orderId: '',
         accountId: '',
-        type: '',
+        type: null,
         fullName: '',
         phone: ''
       },
