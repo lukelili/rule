@@ -98,6 +98,7 @@ export default {
     }
   },
   mounted() {
+    this.tabFixed()
     this.tabActived()
   },
   methods: {
@@ -118,13 +119,14 @@ export default {
     // 选项卡高亮
     tabActived() {
       const tabs = this.tabs
+      const tabH = document.querySelector('#tab-placeholder').clientHeight
       tabs.forEach(item => {
         const nodes = document.querySelector(`#${item.component}`)
         if (!nodes) return
         nodes.style = 'margin-bottom: 15px;'
         const curTop = nodes.offsetTop
-        this.$set(item, 'offsetTop', curTop - 59)
-        if (this.scrollTop >= (curTop - 38)) this.actived = item.component
+        this.$set(item, 'offsetTop', curTop - (tabH + 15))
+        if (this.scrollTop >= (curTop - (tabH + 15))) this.actived = item.component
       })
     }
   }
