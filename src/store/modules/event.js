@@ -1,9 +1,10 @@
 const state = {
-  scrollTop: 0
+  btnLoading: false
+
 }
 const mutations = {
-  SET_SCROLL_TOP(state, value) {
-    state.scrollTop = value
+  SET_LOADING(state, bool) {
+    state.btnLoading = bool
   }
 }
 

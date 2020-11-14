@@ -6,8 +6,8 @@
         <el-button type="success" size="mini" plain @click="btnDetails(data)">详情</el-button>
       </template>
     </v-table>
-    <v-dialog ref="dialog" :visible.sync="visible" title="添加" @handleConfirm="addTableList">
-      <v-form ref="form" :form-item="formItem" :form-data="formData" />
+    <v-dialog ref="dialog" :visible.sync="visible" title="添加">
+      <v-form ref="form" :form-item="formItem" :form-data="formData" :visible.sync="visible" @submit="submitRequest" />
     </v-dialog>
   </div>
 </template>
@@ -125,17 +125,20 @@ export default {
         {
           type: 'input',
           label: '订单编号',
-          field: 'orderId'
+          field: 'orderId',
+          required: true
         },
         {
           type: 'input',
           label: '客户编号',
-          field: 'accountId'
+          field: 'accountId',
+          required: true
         },
         {
           type: 'select',
           label: '订单类型',
           field: 'type',
+          required: true,
           data: [],
           props: {
             label: 'name',
@@ -145,12 +148,14 @@ export default {
         {
           type: 'input',
           label: '客户姓名',
-          field: 'fullName'
+          field: 'fullName',
+          required: true
         },
         {
           type: 'input',
           label: '客户账号',
-          field: 'phone'
+          field: 'phone',
+          required: true
         }
       ]
     }
@@ -172,6 +177,12 @@ export default {
           this.$message.error(message)
         }
       })
+    },
+    submitRequest() {
+      console.log('提交成功')
+      setTimeout(() => {
+        this.$store.commit('SET_LOADING', false)
+      }, 2000)
     },
     btnDetails(data) {
       this.visible = true

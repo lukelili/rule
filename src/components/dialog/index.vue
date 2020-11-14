@@ -3,10 +3,6 @@
     <div class="model">
       <slot />
     </div>
-    <span slot="footer" class="dialog-footer">
-      <el-button type="default" @click="handleClose">取 消</el-button>
-      <el-button type="primary" class="confirm" :loading="confirmLoding" @click="handleConfirm">确 认</el-button>
-    </span>
   </el-dialog>
 </template>
 <script>
@@ -35,21 +31,10 @@ export default {
       default: false
     }
   },
-  data() {
-    return {
-      confirmLoding: false
-    }
-  },
   methods: {
     // 关闭窗口
     handleClose() {
-      this.confirmLoding = false
       this.$emit('update:visible', false)
-    },
-    // 确认按钮
-    handleConfirm() {
-      this.confirmLoding = true
-      this.$emit('handleConfirm')
     }
   }
 }

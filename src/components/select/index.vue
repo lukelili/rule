@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="selectData[defaultOption.field]" :placeholder="'请选择' + defaultOption.label" :clearable="defaultOption.clearable" :loading="selectLoading">
+  <el-select v-model="selectData[defaultOption.field]" :placeholder="placeholder" :clearable="defaultOption.clearable" :loading="selectLoading">
     <el-option v-if="defaultOption.hideAll" label="全部" :value="null" />
     <el-option v-for="select in defaultOption.data" :key="select.mark" :label="select[defaultOption.props.label]" :value="select[defaultOption.props.value]" />
   </el-select>
@@ -50,6 +50,14 @@ export default {
     }
   },
   computed: {
+    placeholder() {
+      const label = this.selectItem.label
+      if (label) {
+        return `请选择${label}`
+      } else {
+        return `请选择下拉框`
+      }
+    }
   },
   watch: {
     'selectItem.data': {

@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="Form" :model="formData" label-width="100px">
+  <el-form ref="Form" :model="formData" label-width="100px" class="form-wrapper">
     <template v-for="(item, index) in formItem">
       <el-form-item :key="index" :label="!item.hideLabel ? item.label : ''" :rules="matchRules(item)" :prop="item.field">
         <template v-if="!item.hidden">
@@ -14,14 +14,19 @@
         </template>
       </el-form-item>
     </template>
+    <div class="footer">
+      <el-button type="default" @click="handleClose">取 消</el-button>
+      <el-button type="primary" class="confirm" :loading="btnLoading" @click="handleConfirm">提 交</el-button>
+    </div>
   </el-form>
 </template>
 <script>
+import { mapState } from 'vuex'
 import VSelect from '@c/select/index.vue'
 export default {
   components: { VSelect },
   props: {
-    /** formItem 是数组对象 每个对象可配置以下参数
+    /** formItem[Object] 是数组对象 每个对象可配置以下参数
      * @param { type } String input|select|radio|checkbox|datePicker|slot
      * @param { label } String 表单名
      * @param { slotName } String 插槽名 当type值为: slot 需传入slotName
@@ -41,24 +46,37 @@ export default {
       default: () => {}
     }
   },
-  data() {
-    return {}
+  computed: {
+    ...mapState({
+      btnLoading: state => state.event.btnLoading
+    })
+    // confirmLoding() {
+    //   return this.$store.state.global.loading
+    // }
   },
   methods: {
-    submit() {
+    // 取消
+    handleClose() {
+      this.$emit('update:visible', false)
+    },
+    // 提交
+    handleConfirm() {
       this.$refs.Form.validate(valid => {
-        console.log(valid)
+        if (!valid) return
+        this.$store.commit('SET_LOADING', true)
+        this.$emit('submit')
       })
     },
-    matchRules(option) {
-      let rulesArray = []
-      const type = option.type
-      const label = option.label
+    matchRules(rule) {
+      const rulesArray = []
+      const type = rule.type
+      const label = rule.label
       const msg = type === 'input' ? '请输入' : '请选择'
-      const required = option.required
+      const required = rule.required
       if (required) {
         rulesArray.push({ required: true, message: msg + label })
       }
+      return rulesArray
       // const rules = option.rules
       // if (rules && Array.isArray(rules)) {
 
@@ -67,3 +85,17 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.form-wrapper{
+  .footer{
+    text-align: right;
+    padding-bottom: 15px;
+    .el-button{
+      padding: 10px 20px;
+    }
+    .confirm{
+      padding: 10px 40px;
+    }
+  }
+}
+</style>

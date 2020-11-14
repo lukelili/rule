@@ -4,6 +4,7 @@ import getters from './getter'
 import user from './modules/user'
 import permission from './modules/permission'
 import global from './modules/global'
+import event from './modules/event'
 
 Vue.use(Vuex)
 export default new Vuex.Store({
@@ -11,6 +12,7 @@ export default new Vuex.Store({
   modules: {
     user,
     permission,
-    global
+    global,
+    event
   }
 })
