@@ -47,11 +47,13 @@ export default {
           type: 'select',
           label: '操作员',
           field: 'type',
-          props: {
-            label: 'label',
-            value: 'value'
-          },
           data: accountList
+        },
+        {
+          type: 'select',
+          label: '订单类型',
+          field: 'orderType',
+          data: 'orderType'
         },
         {
           type: 'input',
@@ -139,7 +141,10 @@ export default {
           label: '订单类型',
           field: 'type',
           required: true,
-          data: [],
+          data: [
+            { label: '信贷', value: 'new' },
+            { label: '复贷', value: 'old' }
+          ],
           props: {
             label: 'name',
             value: 'id'

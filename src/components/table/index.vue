@@ -105,14 +105,15 @@ export default {
   },
   mounted() {
     this.initOPtion()
-    window.addEventListener('resize', () => {
-      this.tableHeight = window.innerHeight - 200
-    })
+    window.addEventListener('resize', this.resize)
   },
   beforeDestroy() {
-    window.removeEventListener('resize')
+    window.removeEventListener('resize', this.resize)
   },
   methods: {
+    resize() {
+      this.tableHeight = window.innerHeight - 200
+    },
     // 初始化配置参数
     initOPtion() {
       Lteration(this.param, this.page)

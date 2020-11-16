@@ -2,8 +2,8 @@
   <el-select v-model="selectData[defaultOption.field]" :placeholder="placeholder" :clearable="defaultOption.clearable" :loading="selectLoading" @focus="focus">
     <el-option v-if="defaultOption.hideAll" label="全部" value="" />
     <el-option
-      v-for="select in defaultOption.data"
-      :key="select.mark"
+      v-for="(select, index) in defaultOption.data"
+      :key="index"
       :label="select[defaultOption.props.label]"
       :value="select[defaultOption.props.value]"
     />
@@ -28,7 +28,7 @@ export default {
       /**
        * @param { selectLoading } Boolean 下拉菜单loading状态
       * **/
-      selectLoading: true,
+      selectLoading: false,
       /**
        * @param { label } String 表单的提示文字
        * @param { field } String 表单属性
@@ -64,35 +64,23 @@ export default {
       }
     }
   },
-  watch: {
-    'selectItem.data': {
-      handler(data) {
-        // 监听到异步数据后再次初始化
-        this.initOptions()
-      }
-    }
-  },
-  mounted() {
-    this.initOptions()
-  },
   methods: {
     focus() {
-
-    },
-    initOptions() {
       const selectItem = this.selectItem // 传入的配置
       const defaultOption = this.defaultOption // 默认配置
-      // 判断 数据长度大于零 loading状态设为false 否则loading状态设置为true
-      selectItem.data.length ? this.selectLoading = false : this.selectLoading = true
-      // 替换默认的配置
+      const data = selectItem.data
       Lteration(selectItem, defaultOption)
-      this.dataMark(defaultOption.data)
-    },
-    // 给数据加个唯一标识
-    dataMark(data) {
-      data.forEach((item, index) => {
-        if (!item.id) item.mark = 'select' + index
-      })
+      if (data === '' || !data.length || !Object.keys(data).length) {
+        this.defaultOption.data = []
+        return
+      }
+      // 私有数据
+      if (typeof data === 'object') {
+        this.defaultOption.data = data
+      // 共享数据
+      } else {
+        console.log(data)
+      }
     }
   }
 }
