@@ -144,11 +144,7 @@ export default {
           data: [
             { label: '信贷', value: 'new' },
             { label: '复贷', value: 'old' }
-          ],
-          props: {
-            label: 'name',
-            value: 'id'
-          }
+          ]
         },
         {
           type: 'input',
