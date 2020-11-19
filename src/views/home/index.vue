@@ -1,18 +1,16 @@
 <template>
-  <el-scrollbar ref="scrollBar" style="height: 100%">
-    <div class="container-full">
-      <div class="banner">banner</div>
-      <div id="tab-placeholder" class="tab-placeholder">
-        <div class="tab-menu" :class="{ 'tab-fixed': isFixed }">
-          <ul class="tab-wrap">
-            <li v-for="item in tabs" :key="item.id" class="tab-item" :class="{ 'actived': actived === item.component }" @click="handleTabPosition(item)">
-              <span>{{ item.label }}</span>
-            </li>
-          </ul>
-        <!-- <div class="operator">
+  <el-scrollbar ref="scrollBar">
+    <div class="banner">banner</div>
+    <div id="tab-placeholder" class="tab-placeholder">
+      <div class="tab-menu" :class="{ 'tab-fixed': isFixed }">
+        <ul class="tab-wrap">
+          <li v-for="item in tabs" :key="item.id" class="tab-item" :class="{ 'actived': actived === item.component }" @click="handleTabPosition(item)">
+            <span>{{ item.label }}</span>
+          </li>
+        </ul>
+        <div class="operator">
           <el-button type="default">返回</el-button>
           <el-button type="default">刷新</el-button>
-        </div> -->
         </div>
       </div>
       <div class="container">
@@ -86,24 +84,15 @@ export default {
           id: 10,
           label: '修改记录'
         }
-      ]
-    }
-  },
-  computed: {
-    scrollTop() {
-      return this.$store.state.global.scrollTop
-    }
-  },
-  watch: {
-    scrollTop(top) {
-      this.tabFixed()
+      ],
+      scrollTop: 0
     }
   },
   mounted() {
     const scrollEl = this.$refs.scrollBar.wrap
     scrollEl.addEventListener('scroll', () => {
-      const top = scrollEl.scrollTop
-      this.$store.commit('SET_SCROLL_TOP', top)
+      this.scrollTop = scrollEl.scrollTop
+      this.tabFixed()
     })
     this.tabFixed()
     this.tabActived()
