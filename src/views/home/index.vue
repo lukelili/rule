@@ -1,25 +1,27 @@
 <template>
-  <div class="container-full">
-    <div class="banner">banner</div>
-    <div id="tab-placeholder" class="tab-placeholder">
-      <div class="tab-menu" :class="{ 'tab-fixed': isFixed }">
-        <ul class="tab-wrap">
-          <li v-for="item in tabs" :key="item.id" class="tab-item" :class="{ 'actived': actived === item.component }" @click="handleTabPosition(item)">
-            <span>{{ item.label }}</span>
-          </li>
-        </ul>
+  <el-scrollbar ref="scrollBar" style="height: 100%">
+    <div class="container-full">
+      <div class="banner">banner</div>
+      <div id="tab-placeholder" class="tab-placeholder">
+        <div class="tab-menu" :class="{ 'tab-fixed': isFixed }">
+          <ul class="tab-wrap">
+            <li v-for="item in tabs" :key="item.id" class="tab-item" :class="{ 'actived': actived === item.component }" @click="handleTabPosition(item)">
+              <span>{{ item.label }}</span>
+            </li>
+          </ul>
         <!-- <div class="operator">
           <el-button type="default">返回</el-button>
           <el-button type="default">刷新</el-button>
         </div> -->
+        </div>
+      </div>
+      <div class="container">
+        <template v-for="item in tabs">
+          <components :is="item.component" :id="item.component" :key="item.id" :title="item.label" />
+        </template>
       </div>
     </div>
-    <div class="container">
-      <template v-for="item in tabs">
-        <components :is="item.component" :id="item.component" :key="item.id" :title="item.label" />
-      </template>
-    </div>
-  </div>
+  </el-scrollbar>
 </template>
 <script>
 import tab from '@c/tab/'
@@ -98,6 +100,11 @@ export default {
     }
   },
   mounted() {
+    const scrollEl = this.$refs.scrollBar.wrap
+    scrollEl.addEventListener('scroll', () => {
+      const top = scrollEl.scrollTop
+      this.$store.commit('SET_SCROLL_TOP', top)
+    })
     this.tabFixed()
     this.tabActived()
   },

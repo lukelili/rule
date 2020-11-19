@@ -5,9 +5,7 @@
       <Breadcrumb />
       <keep-alive>
         <div class="app-main">
-          <el-scrollbar ref="scrollBar" style="height: 100%">
-            <router-view />
-          </el-scrollbar>
+          <router-view />
         </div>
       </keep-alive>
     </el-container>
@@ -17,21 +15,15 @@
 import Breadcrumb from './breadcrumb/index.vue'
 import elAside from './elAside/index'
 export default {
-  components: { elAside, Breadcrumb },
-  mounted() {
-    const scrollEl = this.$refs.scrollBar.wrap
-    scrollEl.addEventListener('scroll', () => {
-      const top = scrollEl.scrollTop
-      this.$store.commit('SET_SCROLL_TOP', top)
-    })
-  }
+  components: { elAside, Breadcrumb }
 }
 </script>
 <style lang="scss" scoped>
 .el-container{
   height: inherit;
   .app-main{
-    height: 100vh;
+    flex: 1;
+    display: flex;
   }
 }
 </style>

@@ -62,7 +62,7 @@ export default {
   },
   data() {
     return {
-      tableHeight: window.innerHeight - 200,
+      tableHeight: 0,
       tableOption: {
         name: '数据列表',
         /** operates 表格头部操作按钮数组对象 每个对象包含以下配置参数
@@ -105,14 +105,19 @@ export default {
   },
   mounted() {
     this.initOPtion()
-    window.addEventListener('resize', this.resize)
+    this.$nextTick(() => {
+      this.resize()
+      window.addEventListener('resize', this.resize)
+    })
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.resize)
   },
   methods: {
     resize() {
-      this.tableHeight = window.innerHeight - 200
+      this.tableHeight = 0
+      const componentTable = document.querySelector('.component-table')
+      this.tableHeight = componentTable.clientHeight - 93
     },
     // 初始化配置参数
     initOPtion() {
@@ -138,9 +143,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .component-table{
-  display: flex;
-  flex-direction: column;
   flex: 1;
+  position: relative;
   .operation{
     height: 50px;
     display: flex;
