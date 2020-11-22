@@ -14,7 +14,7 @@
       </el-button-group>
     </div>
     <!-- 表格 -->
-    <el-table v-loading="tableOption.loading" :data="tableOption.tableList" :height="tableHeight" border :header-cell-style="{ backgroundColor:'#F5F7FA' }">
+    <el-table v-loading="tableOption.loading" :height="tableHeight" :data="tableOption.tableList" fit border :header-cell-style="{ backgroundColor:'#F5F7FA' }">
       <!-- 复选框 -->
       <el-table-column v-if="tableOption.selection" type="selection" width="55" align="center" />
       <template v-for="item in tableOption.tHead">
@@ -107,8 +107,8 @@ export default {
     this.initOPtion()
     this.$nextTick(() => {
       this.resize()
-      window.addEventListener('resize', this.resize)
     })
+    window.addEventListener('resize', this.resize)
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.resize)
@@ -116,8 +116,11 @@ export default {
   methods: {
     resize() {
       this.tableHeight = 0
-      const componentTable = document.querySelector('.component-table')
-      this.tableHeight = componentTable.clientHeight - 93
+      const breadcrumb = document.querySelector('.el-breadcrumb')
+      const searchWrap = document.querySelector('#search-wrapper')
+      // 搜索框高 + 面包屑高 + 表格操作栏高 + 分页高 + 上下的内边距
+      const height = searchWrap.clientHeight + breadcrumb.clientHeight + 51 + 42 + 20
+      this.tableHeight = window.innerHeight - height
     },
     // 初始化配置参数
     initOPtion() {

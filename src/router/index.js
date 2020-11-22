@@ -79,6 +79,25 @@ const routes = [
     id: 4,
     sort: 4,
     pid: 0,
+    name: 'CSS演示',
+    path: '/cssDemo',
+    status: 1,
+    component: Layout,
+    children: [
+      {
+        sort: 1,
+        level: '4-0',
+        name: 'CSS图案',
+        path: '/cssPattern',
+        status: 1,
+        component: () => import('@/views/cssDemo/cssPattern.vue')
+      }
+    ]
+  },
+  {
+    id: 5,
+    sort: 5,
+    pid: 0,
     level: '3',
     name: '系统配置',
     path: '/systeam',

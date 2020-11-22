@@ -18,13 +18,3 @@ export default {
   components: { elAside, Breadcrumb }
 }
 </script>
-<style lang="scss" scoped>
-.el-container{
-  height: inherit;
-  .app-main{
-    flex: 1;
-    height: 100%;
-    display: flex;
-  }
-}
-</style>

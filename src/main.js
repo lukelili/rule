@@ -11,6 +11,10 @@ import './style/index.scss'
 Vue.use(ElementUI, {
   size: 'mini'
 })
+import vuescroll from 'vuescroll'
+Vue.use(vuescroll, {
+  name: 'vuescroll'
+})
 
 new Vue({
   router,

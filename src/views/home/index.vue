@@ -1,5 +1,5 @@
 <template>
-  <el-scrollbar ref="scrollBar">
+  <vuescroll>
     <div class="banner">banner</div>
     <div id="tab-placeholder" class="tab-placeholder">
       <div class="tab-menu" :class="{ 'tab-fixed': isFixed }">
@@ -19,7 +19,7 @@
         </template>
       </div>
     </div>
-  </el-scrollbar>
+  </vuescroll>
 </template>
 <script>
 import tab from '@c/tab/'
@@ -89,11 +89,11 @@ export default {
     }
   },
   mounted() {
-    const scrollEl = this.$refs.scrollBar.wrap
-    scrollEl.addEventListener('scroll', () => {
-      this.scrollTop = scrollEl.scrollTop
-      this.tabFixed()
-    })
+    // const scrollEl = this.$refs.scrollBar.wrap
+    // scrollEl.addEventListener('scroll', () => {
+    //   this.scrollTop = scrollEl.scrollTop
+    //   this.tabFixed()
+    // })
     this.tabFixed()
     this.tabActived()
   },
