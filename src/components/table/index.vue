@@ -116,7 +116,7 @@ export default {
   methods: {
     resize() {
       this.tableHeight = 0
-      const breadcrumb = document.querySelector('.el-breadcrumb')
+      const breadcrumb = document.querySelector('.header-bar')
       const searchWrap = document.querySelector('#search-wrapper')
       // 搜索框高 + 面包屑高 + 表格操作栏高 + 分页高 + 上下的内边距
       const height = searchWrap.clientHeight + breadcrumb.clientHeight + 51 + 42 + 20

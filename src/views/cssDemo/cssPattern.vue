@@ -17,12 +17,13 @@ export default {
 <style lang="scss" scoped>
 .css-pattern{
   display: grid;
-  grid-template-columns: repeat(4, 25%);
-  grid-template-rows: repeat(4, 100%);
+  grid-template-columns: repeat(3, 33.3%);
+  grid-template-rows: repeat(3, 100%);
 }
 .box{
   display: flex;
   justify-content: center;
+  align-items: center;
   padding: 20px;
 }
 .pink{

@@ -1,10 +1,13 @@
 <template>
-  <el-aside width="200px">
+  <el-aside :class="{'down': isCollapse}">
     <vuescroll>
-      <el-menu :default-active="activeIndex" class="el-menu-demo" mode="vertical" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" router @select="handleSelect">
+      <el-menu :default-active="activeIndex" :collapse="isCollapse" class="el-menu-demo" mode="vertical" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" router @select="handleSelect">
         <template v-for="route in routes">
           <el-submenu :key="route.path" :index="route.path">
-            <template slot="title">{{ route.name }}</template>
+            <template slot="title">
+              <i class="el-icon-menu" />
+              <span slot="title">{{ route.name }}</span>
+            </template>
             <template v-for="child in route.children">
               <el-menu-item :key="child.path" :index="child.path">{{ child.name }}</el-menu-item>
             </template>
@@ -15,12 +18,18 @@
   </el-aside>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
   data() {
     return {
       activeIndex: '1',
       routes: this.$router.options.routes
     }
+  },
+  computed: {
+    ...mapState({
+      'isCollapse': state => state.global.isCollapse
+    })
   },
   mounted() {
     // console.log(this.routes)
@@ -34,10 +43,16 @@ export default {
 </script>
 <style lang="scss" scoped>
 .el-aside{
+  width: 200px !important;
   height: 100%;
+  transition: .2s;
   background-color: rgb(84, 92, 100);
   .el-menu{
     border-right: none;
   }
+}
+.down{
+  width: 64px !important;
+  transition: .2s;
 }
 </style>
