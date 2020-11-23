@@ -5,6 +5,7 @@ import store from './store'
 import './permission'
 import './components/use'
 Vue.config.productionTip = false
+import './mock/index'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './style/index.scss'

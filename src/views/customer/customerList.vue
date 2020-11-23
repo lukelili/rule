@@ -142,7 +142,7 @@ export default {
           field: 'type',
           required: true,
           data: [
-            { label: '信贷', value: 'new' },
+            { label: '新贷', value: 'new' },
             { label: '复贷', value: 'old' }
           ]
         },
