@@ -1,5 +1,5 @@
 <template>
-  <div class="container-full">
+  <vuescroll>
     <div class="banner">banner</div>
     <div id="tab-placeholder" class="tab-placeholder">
       <div class="tab-menu" :class="{ 'tab-fixed': isFixed }">
@@ -8,18 +8,18 @@
             <span>{{ item.label }}</span>
           </li>
         </ul>
-        <!-- <div class="operator">
+        <div class="operator">
           <el-button type="default">返回</el-button>
           <el-button type="default">刷新</el-button>
-        </div> -->
+        </div>
+      </div>
+      <div class="container">
+        <template v-for="item in tabs">
+          <components :is="item.component" :id="item.component" :key="item.id" :title="item.label" />
+        </template>
       </div>
     </div>
-    <div class="container">
-      <template v-for="item in tabs">
-        <components :is="item.component" :id="item.component" :key="item.id" :title="item.label" />
-      </template>
-    </div>
-  </div>
+  </vuescroll>
 </template>
 <script>
 import tab from '@c/tab/'
@@ -84,20 +84,16 @@ export default {
           id: 10,
           label: '修改记录'
         }
-      ]
-    }
-  },
-  computed: {
-    scrollTop() {
-      return this.$store.state.global.scrollTop
-    }
-  },
-  watch: {
-    scrollTop(top) {
-      this.tabFixed()
+      ],
+      scrollTop: 0
     }
   },
   mounted() {
+    // const scrollEl = this.$refs.scrollBar.wrap
+    // scrollEl.addEventListener('scroll', () => {
+    //   this.scrollTop = scrollEl.scrollTop
+    //   this.tabFixed()
+    // })
     this.tabFixed()
     this.tabActived()
   },

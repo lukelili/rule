@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="searchForm" :inline="true" :model="searchData" class="search-form-inline">
+  <el-form id="search-wrapper" ref="searchForm" :inline="true" :model="searchData" class="search-form-inline">
     <template v-for="(item, index) in searchItem">
       <el-form-item :key="index" :label="item.showLabel ? item.label : ''" :prop="item.field">
         <!-- 输入框 -->
