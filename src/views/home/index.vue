@@ -27,6 +27,7 @@ import baseInfo from './components/baseInfo.vue'
 import workInfo from './components/workInfo.vue'
 import liveTest from './components/liveTest.vue'
 import ocrIdentify from './components/ocrIdentify.vue'
+import { setItem, getItem } from '@/utils/storage'
 export default {
   components: {
     tab,
@@ -89,6 +90,8 @@ export default {
     }
   },
   mounted() {
+    setItem('key', '1111')
+    console.log(getItem('key'))
     // const scrollEl = this.$refs.scrollBar.wrap
     // scrollEl.addEventListener('scroll', () => {
     //   this.scrollTop = scrollEl.scrollTop

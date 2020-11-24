@@ -1,5 +1,4 @@
 export function setItem(key, val) {
-  if (!val) return
   sessionStorage.setItem(key, JSON.stringify(val))
 }
 

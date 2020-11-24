@@ -43,15 +43,24 @@ export default {
     formData: {
       type: Object,
       default: () => {}
+    },
+    visible: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
     ...mapState({
       btnLoading: state => state.event.btnLoading
     })
-    // confirmLoding() {
-    //   return this.$store.state.global.loading
-    // }
+  },
+  watch: {
+    visible(bool) {
+      // 为false 重置验证
+      if (!bool) {
+        this.$refs.Form.clearValidate()
+      }
+    }
   },
   methods: {
     // 取消
@@ -66,20 +75,73 @@ export default {
         this.$emit('submit')
       })
     },
-    matchRules(rule) {
+    validationRule(option) {
+      const checkes = []
+      // 必填
+      if (option.required) {
+        const message = `${this.tips(option.type)}${option.label}`
+        const required = { required: true, message: message }
+        checkes.push(required)
+      }
+      const rule = option.rule
+      if (!rule) return checkes
+      // 数组
+      if (Array.isArray(rule)) {
+        checkes.push(...rule)
+        return checkes
+      }
+      // 对象
+      if (this.isObject(rule)) {
+        checkes.push(rule)
+        return checkes
+      }
+      // 匹配内置规则
+      if (typeof rule === 'string') {
+        checkes.push(...this.matchCheckes(option))
+        return checkes
+      }
+    },
+    matchCheckes(option) {
+      const label = option.label
+      const item = option.rule.split(',')
       const rulesArray = []
-      const type = rule.type
-      const label = rule.label
-      const msg = type === 'input' ? '请输入' : '请选择'
-      const required = rule.required
-      if (required) {
-        rulesArray.push({ required: true, message: msg + label })
+      const roleName = this.checkes(item[0], label)
+      roleName && rulesArray.push(roleName)
+      // 最小个数
+      const min = parseInt(item[1])
+      if (min || min === 0) {
+        const roleMin = this.checkes('min', label, min)
+        rulesArray.push(roleMin)
+      }
+      // 最大个数
+      const max = parseInt(item[2])
+      if (max) {
+        const roleMax = this.checkes('max', label, max)
+        rulesArray.push(roleMax)
       }
       return rulesArray
-      // const rules = option.rules
-      // if (rules && Array.isArray(rules)) {
-
-      // }
+    },
+    checkes(field, label = '', min = 0, max = 1000) {
+      const rules = {
+        cn: { pattern: /^[\u4e00-\u9fa5\s]*$/g, message: `${label}${this.$t('rules.RequiredCn')}` },
+        en: { pattern: /^[a-zA-Z\s]*$/g, message: `${label}${this.$t('rules.RequiredEnglish')}` },
+        thai: { pattern: /^[\u0E00-\u0E7F\s]*$/g, message: `${label}${this.$t('rules.RequiredThai')}` },
+        number: { pattern: /^\d+\.?\d*$/, message: `${label}${this.$t('rules.RequiredNumeric')}` },
+        string: { type: 'string', message: `${this.$t('rules.pleasInput')} ${label}` },
+        min: { min: min, message: `${label}${this.$t('rules.minlength')}${min}${this.$t('rules.digits')}` },
+        max: { max: max, message: `${label}${this.$t('rules.maxlength')}${max}${this.$t('rules.digits')}` }
+      }
+      if (Object.prototype.hasOwnProperty.call(rules, field)) {
+        return rules[field]
+      }
+    },
+    // // 错误提示
+    tips(type) {
+      return type === 'input' ? '请输入' : '请选择'
+    },
+    // 对象判断
+    isObject(port) {
+      return Object.prototype.toString.call(port) === '[object Object]'
     }
   }
 }

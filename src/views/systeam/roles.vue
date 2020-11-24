@@ -23,7 +23,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog :visible.sync="rolesModelVisible" :title="rolesModelTitle" :modal-append-to-body="false">
+    <v-dialog :visible.sync="rolesModelVisible" :title="rolesModelTitle" :modal-append-to-body="false">
       <el-form ref="rolesForm" :model="rolesForm" :rules="rolesRules" label-width="100px">
         <el-form-item label="角色名" prop="name">
           <el-input v-model="rolesForm.name" placeholder="请输入角色名" />
@@ -48,7 +48,7 @@
           <el-button type="default" size="small" @click="resetRolesForm('rolesForm')">重置</el-button>
         </el-form-item>
       </el-form>
-    </el-dialog>
+    </v-dialog>
   </div>
 </template>
 <script>
