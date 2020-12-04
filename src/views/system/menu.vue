@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <v-search :search-item="searchItem" :search-data="searchData" @handleSearch="getMenuList" />
     <v-table :options="tableOption">
       <template v-slot:status="{ data }">
         <el-switch v-model="data.status" :active-value="true" :inactive-value="false" active-color="#13ce66" inactive-color="#ff4949" />
@@ -11,7 +12,7 @@
       </template>
     </v-table>
     <v-dialog :title="title" :visible.sync="visible">
-      <v-form :form-item="formItem" :form-data="formData" :visible.sync="visible" @submit="submit" />
+      <v-form :form-item="formItem" :form-data="formData" :visible.sync="visible" @submit="request" />
     </v-dialog>
   </div>
 </template>
@@ -20,6 +21,17 @@ import { MenuList, OperationMenu } from '@/api/system'
 export default {
   data() {
     return {
+      // 搜索
+      searchItem: [
+        {
+          type: 'input',
+          field: 'name',
+          label: '菜单名'
+        }
+      ],
+      searchData: {
+        name: ''
+      },
       // 表格配置
       tableOption: {
         tHead: [
@@ -41,6 +53,8 @@ export default {
               this.type = 'create'
               this.title = '添加目录'
               this.visible = true
+              this.formData.level = 0
+              delete this.formData._id
             }
           }
         ]
@@ -80,7 +94,7 @@ export default {
       const tableOption = this.tableOption
       try {
         tableOption.loading = true
-        const res = await MenuList()
+        const res = await MenuList(this.searchData)
         tableOption.loading = false
         const { code, data, mesaage } = res.data
         if (code !== 200) {
@@ -92,7 +106,7 @@ export default {
         console.log(err)
       }
     },
-    // 编辑菜单
+    // 编辑目录
     handleEditMenu(data) {
       this.type = 'update'
       this.title = '编辑菜单'
@@ -101,14 +115,15 @@ export default {
       this.$nextTick(() => {
         this.$deepMatch(data, this.formData)
         this.formData._id = data._id
+        delete this.formData.pid
       })
     },
-    // 添加菜单
-    handleAddChildMenu() {
+    // 添加子集菜单
+    handleAddChildMenu(data) {
       this.type = 'create'
-      this.title = '添加菜单'
+      this.title = '添加子集'
       this.visible = true
-      this.formData._id && delete this.formData._id
+      this.formData.pid = data._id
     },
     // 删除菜单
     async handleDeleteMenu(data) {
@@ -122,10 +137,9 @@ export default {
       this.$message.success('删除成功！')
       this.getMenuList()
     },
-    // 提交菜单
-    async submit() {
-      this.$store.commit('SET_LOADING', false)
+    async request() {
       const res = await OperationMenu(this.type, this.formData)
+      this.$store.commit('SET_LOADING', false)
       const { code, message } = res.data
       if (code !== 200) {
         this.$message.error(message)
