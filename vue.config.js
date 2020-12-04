@@ -1,7 +1,7 @@
 'use strict'
 const path = require('path')
 function resolve(dir) { return path.join(__dirname, dir) }
-const port = process.env.port || process.env.npm_config_port || 9528 // dev port
+const port = process.env.port || process.env.npm_config_port || 8080 // dev port
 module.exports = {
   publicPath: '/',
   outputDir: 'dist',
@@ -17,7 +17,7 @@ module.exports = {
     },
     proxy: {
       '/admin': {
-        target: 'https://www.fastmock.site/mock/59d7586b5f8dc479f8769811c9386d70/admin',
+        target: 'http://localhost:80/admin',
         changeOrigin: true,
         ws: true,
         pathRewrite: {

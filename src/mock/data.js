@@ -1,15 +1,21 @@
+const demoList = [{
+  id: 1,
+  name: 'zs',
+  age: '23',
+  job: '前端工程师'
+}, {
+  id: 2,
+  name: 'ww',
+  age: '24',
+  job: '后端工程师'
+}]
+
 export default {
-  getOrderType: () => ({
-    code: 0,
-    data: [
-      {
-        label: '新贷',
-        value: 'new'
-      },
-      {
-        label: '复贷',
-        value: 'old'
-      }
-    ]
-  })
+  'get|/admin/parameter/query': option => {
+    return {
+      status: 200,
+      message: 'success',
+      data: demoList
+    }
+  }
 }

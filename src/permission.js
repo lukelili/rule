@@ -1,37 +1,40 @@
-// import router from './router'
-// import store from './store'
-// import NProgress from 'nprogress'
-// import 'nprogress/nprogress.css'
-// import { getItem } from '@/utils/storage'
+import router from './router'
+import store from './store'
+// 进度条
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+// 用户信息
+const user = store.state.user
+// 路由守卫
+NProgress.configure({ showSpinner: false })
+// 可访问的白名单
 
-// NProgress.configure({ showSpinner: false })
-// // 可访问的白名单
-// const whiteList = ['/login']
-// router.beforeEach(async(to, from, next) => {
-//   NProgress.start()
-//   const hasToken = getItem('token')
-//   if (hasToken) {
-//     if (to.path === '/login') {
-//       next({ path: '/' })
-//       NProgress.done()
-//     }
-//     next()
-//     // const hasAddRoutes = store.getters.addRoutes && store.getters.addRoutes.length
-//     // if (hasAddRoutes) next()
-//     // try {
-//     //   const accessRoutes = await store.dispatch('permission/getMenuList')
-//     // } catch(error) {
-
-//     // }
-//   } else {
-//     if (whiteList.includes(to.path)) {
-//       next()
-//     } else {
-//       next('/login')
-//       NProgress.done()
-//     }
-//   }
-// })
-// router.afterEach(() => {
-//   NProgress.done()
-// })
+const whiteList = ['/login']
+router.beforeEach(async(to, from, next) => {
+  NProgress.start()
+  // 1. token判断不存 > 跳转登录
+  if (!user.token) {
+    whiteList.includes(to.path) ? next() : next('/login')
+    NProgress.done()
+    // 2. token判断存在 > 判断菜单
+  } else {
+    const addroutes = store.state.menu.addroutes
+    const hasRoutes = addroutes && addroutes.length
+    // 3. 菜单存在的话 > 跳转首页
+    if (hasRoutes) {
+      next()
+      // 4. 菜单不存在 > 请求菜单接口
+    } else {
+      try {
+        const accessRoutes = await store.dispatch('menu/roleMenu')
+        router.addRoutes(accessRoutes)
+        next({ ...to, replace: true })
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  }
+})
+router.afterEach(() => {
+  NProgress.done()
+})

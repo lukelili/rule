@@ -1,15 +1,39 @@
-// 外部参数 替换 默认配置
-export function Lteration(param, options) {
-  const keys = Object.keys(param)
-  if (!keys.length) return
-  keys.forEach(item => {
-    if (Object.prototype.hasOwnProperty.call(options, item)) {
-      if (Object.prototype.toString.call(param[item]) === '[object Object]') {
-        Lteration(param[item], options[item])
+import Vue from 'vue'
+/**
+ * 来源对象 深层 匹配 目标对象
+ * @param { Object } source
+ * @param { target } target
+*/
+export function deepMatch(source, target) {
+  if (!Object.keys(source).length) return
+  for (const key in source) {
+    if (isIn(target, key)) {
+      if (isObject(source[key])) {
+        deepMatch(source[key], target[key])
       } else {
-        options[item] = param[item]
+        target[key] = source[key]
       }
     }
-  })
-  return options
+  }
+  return target
 }
+
+/**
+ * @param { Object } target
+ * @param { property } key
+ * @return { Boolean } 对象集合包含某属性 返回true
+*/
+function isIn(target, key) {
+  return Object.prototype.hasOwnProperty.call(target, key)
+}
+
+/**
+ * @param { Object } data
+ * @return { Boolean } 对象类型 返回true
+ **/
+function isObject(data) {
+  return Object.prototype.toString.call(data) === '[object Object]'
+}
+
+Vue.prototype.$deepMatch = deepMatch
+

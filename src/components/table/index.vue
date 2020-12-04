@@ -6,12 +6,12 @@
         <i class="iconfont icontable" />
         {{ tableOption.name }}
       </div>
-      <el-button-group>
+      <div>
         <template v-for="(item, index) in tableOption.operates">
           <el-button :key="index" :icon="item.icon" :type="item.type" @click="operateEvent(item.event)">{{ item.label }}</el-button>
         </template>
         <el-button icon="el-icon-refresh" type="default">刷新</el-button>
-      </el-button-group>
+      </div>
     </div>
     <!-- 表格 -->
     <el-table v-loading="tableOption.loading" :height="tableHeight" :data="tableOption.tableList" fit border :header-cell-style="{ backgroundColor:'#F5F7FA' }">
@@ -47,13 +47,12 @@
 </template>
 <script>
 import page from './page.js'
-import { Lteration } from '@/utils/tools.js'
 export default {
   mixins: [page],
   props: {
     options: {
       type: Object,
-      default: () => {}
+      required: true
     },
     param: {
       type: Object,
@@ -97,10 +96,11 @@ export default {
     }
   },
   watch: {
-    'options.loading': {
+    'options': {
       handler(data) {
         this.initOPtion()
-      }
+      },
+      deep: true
     }
   },
   mounted() {
@@ -118,14 +118,15 @@ export default {
       this.tableHeight = 0
       const breadcrumb = document.querySelector('.header-bar')
       const searchWrap = document.querySelector('#search-wrapper')
+      const searchHeight = (searchWrap && searchWrap.clientHeight) || 0
       // 搜索框高 + 面包屑高 + 表格操作栏高 + 分页高 + 上下的内边距
-      const height = searchWrap.clientHeight + breadcrumb.clientHeight + 51 + 42 + 20
+      const height = searchHeight + breadcrumb.clientHeight + 51 + 42 + 20
       this.tableHeight = window.innerHeight - height
     },
     // 初始化配置参数
     initOPtion() {
-      Lteration(this.param, this.page)
-      Lteration(this.options, this.tableOption)
+      this.param && this.$deepMatch(this.param, this.page)
+      this.$deepMatch(this.options, this.tableOption)
     },
     // 操作按钮事件
     operateEvent(event) {

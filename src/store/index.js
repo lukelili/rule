@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import getters from './getter'
 import user from './modules/user'
-import permission from './modules/permission'
+import menu from './modules/menu'
 import global from './modules/global'
 import event from './modules/event'
 import data from './modules/data'
@@ -12,7 +12,7 @@ export default new Vuex.Store({
   getters,
   modules: {
     user,
-    permission,
+    menu,
     global,
     event,
     data

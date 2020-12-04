@@ -3,15 +3,17 @@
     <vuescroll>
       <el-menu :default-active="activeIndex" :collapse="isCollapse" class="el-menu-demo" mode="vertical" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" router @select="handleSelect">
         <template v-for="route in routes">
-          <el-submenu :key="route.path" :index="route.path">
-            <template slot="title">
-              <i class="el-icon-menu" />
-              <span slot="title">{{ route.name }}</span>
-            </template>
-            <template v-for="child in route.children">
-              <el-menu-item :key="child.path" :index="child.path">{{ child.name }}</el-menu-item>
-            </template>
-          </el-submenu>
+          <template v-if="!route.hidden">
+            <el-submenu :key="route.path" :index="route.path">
+              <template slot="title">
+                <!-- <i class="el-icon-menu" /> -->
+                <span slot="title">{{ route.name }}</span>
+              </template>
+              <template v-for="child in route.children">
+                <el-menu-item :key="child.path" :index="child.path">{{ child.name }}</el-menu-item>
+              </template>
+            </el-submenu>
+          </template>
         </template>
       </el-menu>
     </vuescroll>
@@ -22,22 +24,17 @@ import { mapState } from 'vuex'
 export default {
   data() {
     return {
-      activeIndex: '1',
-      routes: this.$router.options.routes
+      activeIndex: '1'
     }
   },
   computed: {
     ...mapState({
-      'isCollapse': state => state.global.isCollapse
+      isCollapse: state => state.global.isCollapse,
+      routes: state => state.menu.routes
     })
   },
-  mounted() {
-    // console.log(this.routes)
-  },
   methods: {
-    handleSelect() {
-      // console.log('aa')
-    }
+    handleSelect() {}
   }
 }
 </script>

@@ -13,6 +13,7 @@
 </template>
 <script>
 import customer from '@a/customer'
+import global from '@a/global'
 export default {
   data() {
     const accountList = [
@@ -162,7 +163,9 @@ export default {
     }
   },
   mounted() {
-    this.getTableList()
+    global.orderType().then(res => {
+      // console.log(res)
+    })
   },
   methods: {
     getTableList() {

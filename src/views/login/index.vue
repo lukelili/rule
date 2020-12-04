@@ -2,9 +2,9 @@
   <div class="container-full">
     <div class="login-box">
       <div class="title">后台管理系统</div>
-      <el-form ref="form" :model="form" :rules="loginRules" label-width="0" class="login-form" @keydown.enter.native="sunbmitEvent('form')">
-        <el-form-item prop="account">
-          <el-input v-model="form.account" size="small" placeholder="请输入账号">
+      <el-form ref="form" :model="form" :rules="rules" label-width="0" class="login-form" @keydown.enter.native="sunbmitEvent('form')">
+        <el-form-item prop="username">
+          <el-input v-model="form.username" size="small" placeholder="请输入账号">
             <el-button slot="prepend" icon="el-icon-user-solid" />
           </el-input>
         </el-form-item>
@@ -26,12 +26,12 @@ export default {
   data() {
     return {
       form: {
-        account: '',
-        password: ''
+        username: 'lipeng',
+        password: '123456'
       },
-      loginRules: {
-        account: [{ required: true }],
-        password: [{ required: true }]
+      rules: {
+        username: [{ required: true, message: '请输入账号' }],
+        password: [{ required: true, message: '请输入密码' }]
       }
     }
   },
@@ -41,9 +41,7 @@ export default {
       btnLoginText: state => state.user.btnLoginText
     })
   },
-  mounted() {
-    
-  },
+  mounted() {},
   methods: {
     sunbmitEvent(form) {
       this.$refs[form].validate((valid) => {

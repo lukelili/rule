@@ -10,7 +10,6 @@
   </el-select>
 </template>
 <script>
-import { Lteration } from '@/utils/tools.js'
 export default {
   name: 'VSelect',
   props: {
@@ -69,7 +68,7 @@ export default {
       const selectItem = this.selectItem // 传入的配置
       const defaultOption = this.defaultOption // 默认配置
       const data = selectItem.data
-      Lteration(selectItem, defaultOption)
+      this.$deepMatch(selectItem, defaultOption)
       if (data === '' || !data.length || !Object.keys(data).length) {
         this.defaultOption.data = []
         return

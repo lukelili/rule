@@ -2,7 +2,6 @@
   <el-date-picker v-model="dateData[dateItem.field]" :type="defaultOption.dateType" :value-format="valueFormat" :placeholder="'请选择' + defaultOption.label" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" />
 </template>
 <script>
-import { Lteration } from '@/utils/tools.js'
 export default {
   props: {
     dateItem: {
@@ -32,7 +31,7 @@ export default {
     }
   },
   mounted() {
-    Lteration(this.dateItem, this.defaultOption)
+    this.$deepMatch(this.dateItem, this.defaultOption)
     this.initDateOption()
   },
   methods: {

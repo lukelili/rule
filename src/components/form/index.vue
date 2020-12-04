@@ -1,12 +1,15 @@
 <template>
-  <el-form ref="Form" :model="formData" label-width="100px" class="form-wrapper">
+  <el-form ref="Form" :model="formData" :hide-required-asterisk="true" label-width="100px" class="form-wrapper">
     <template v-for="(item, index) in formItem">
-      <el-form-item :key="index" :label="!item.hideLabel ? item.label : ''" :rules="matchRules(item)" :prop="item.field">
+      <el-form-item :key="index" :label="!item.hideLabel ? item.label : ''" :rules="validationRule(item)" :prop="item.field">
         <template v-if="!item.hidden">
           <!-- 插槽 -->
           <slot v-if="item.type === 'slot'" :name="item.slotName" />
           <!-- 输入框 -->
           <el-input v-if="item.type === 'input'" v-model="formData[item.field]" :placeholder="'请输入' + item.label" :clearable="!item.clearable" />
+          <el-radio-group v-if="item.type === 'radio'" v-model="formData[item.field]">
+            <el-radio v-for="radio in item.option" :key="radio.value" border :label="radio.value">{{ radio.label }}</el-radio>
+          </el-radio-group>
           <!-- 下拉选择器 -->
           <v-select v-if="item.type === 'select'" :select-item="item" :select-data="formData" />
           <!-- 日期范围 -->
@@ -56,9 +59,12 @@ export default {
   },
   watch: {
     visible(bool) {
-      // 为false 重置验证
       if (!bool) {
-        this.$refs.Form.clearValidate()
+        // 监听表格关闭的时候 延迟200毫秒(视觉效果会好一些) 重置表单
+        setTimeout(() => {
+          this.$refs.Form.clearValidate()
+          this.$refs.Form.resetFields()
+        }, 200)
       }
     }
   },
@@ -123,13 +129,12 @@ export default {
     },
     checkes(field, label = '', min = 0, max = 1000) {
       const rules = {
-        cn: { pattern: /^[\u4e00-\u9fa5\s]*$/g, message: `${label}${this.$t('rules.RequiredCn')}` },
-        en: { pattern: /^[a-zA-Z\s]*$/g, message: `${label}${this.$t('rules.RequiredEnglish')}` },
-        thai: { pattern: /^[\u0E00-\u0E7F\s]*$/g, message: `${label}${this.$t('rules.RequiredThai')}` },
-        number: { pattern: /^\d+\.?\d*$/, message: `${label}${this.$t('rules.RequiredNumeric')}` },
-        string: { type: 'string', message: `${this.$t('rules.pleasInput')} ${label}` },
-        min: { min: min, message: `${label}${this.$t('rules.minlength')}${min}${this.$t('rules.digits')}` },
-        max: { max: max, message: `${label}${this.$t('rules.maxlength')}${max}${this.$t('rules.digits')}` }
+        cn: { pattern: /^[\u4e00-\u9fa5\s]*$/g, message: `${label} 必须为中文` },
+        en: { pattern: /^[a-zA-Z\s]*$/g, message: `${label} 必须为英文` },
+        thai: { pattern: /^[\u0E00-\u0E7F\s]*$/g, message: `${label} 必须为泰文` },
+        number: { pattern: /^\d+\.?\d*$/, message: `${label} 必须为数字类型` },
+        min: { min: min, message: `${label} 最小长度 ${min}` },
+        max: { max: max, message: `${label} 最大长度 ${max}` }
       }
       if (Object.prototype.hasOwnProperty.call(rules, field)) {
         return rules[field]
