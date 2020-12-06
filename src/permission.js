@@ -3,13 +3,12 @@ import store from './store'
 // 进度条
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
+NProgress.configure({ showSpinner: false })
 // 用户信息
 const user = store.state.user
-// 路由守卫
-NProgress.configure({ showSpinner: false })
 // 可访问的白名单
-
 const whiteList = ['/login']
+// 路由守卫
 router.beforeEach(async(to, from, next) => {
   NProgress.start()
   // 1. token判断不存 > 跳转登录
@@ -30,7 +29,11 @@ router.beforeEach(async(to, from, next) => {
         router.addRoutes(accessRoutes)
         next({ ...to, replace: true })
       } catch (err) {
-        console.log(err)
+        await store.dispatch('user/resetToken')
+        // vm.$msg.error(error || 'Has Error')
+        next(`/login?redirect=${to.path}`)
+        NProgress.done()
+
       }
     }
   }

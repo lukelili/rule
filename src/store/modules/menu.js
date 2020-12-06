@@ -11,19 +11,19 @@ const state = {
 const mutations = {
   SET_ROUTES(state, route) {
     state.addroutes = route
-    state.routes = route.concat(routes)
+    state.routes = route
   }
 }
 const actions = {
   async roleMenu({ commit }) {
     const res = await RoleMenu()
     const { code, data, message } = res.data
-    if (code !== 200) {
+    if (code !== 200 && data.length) {
       Message.error(message)
       return
     }
     const asyncRoutes = filterAsyncRoutes(data)
-    commit('SET_ROUTES', asyncRoutes)
+    commit('SET_ROUTES', asyncRoutes.concat(routes))
     return asyncRoutes
   }
 }

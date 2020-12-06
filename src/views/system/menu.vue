@@ -55,6 +55,7 @@ export default {
               this.visible = true
               this.formData.level = 0
               delete this.formData._id
+              delete this.formData.pid
             }
           }
         ]
@@ -75,8 +76,8 @@ export default {
       ],
       formData: {
         name: '',
-        path: '',
-        component: '',
+        path: '/',
+        component: '@/views/',
         sort: '',
         status: true,
         hidden: false
@@ -123,6 +124,7 @@ export default {
       this.type = 'create'
       this.title = '添加子集'
       this.visible = true
+      delete this.formData.level
       this.formData.pid = data._id
     },
     // 删除菜单

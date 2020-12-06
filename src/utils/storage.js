@@ -3,7 +3,11 @@ export function setItem(key, val) {
 }
 
 export function getItem(key) {
-  return JSON.parse(sessionStorage.getItem(key))
+  try {
+    return JSON.parse(sessionStorage.getItem(key))
+  } catch (err) {
+    return ''
+  }
 }
 
 export function removeItem(key) {

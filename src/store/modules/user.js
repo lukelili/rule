@@ -1,7 +1,7 @@
 import { Login } from '@a/user'
 import { Message } from 'element-ui'
 import router from '@/router'
-import { setItem, getItem } from '@/utils/storage'
+import { setItem, getItem, removeItem } from '@/utils/storage'
 
 const state = {
   role: getItem('role'),
@@ -41,6 +41,11 @@ const actions = {
       { key: 'token', value: res.headers.token }
     ])
     router.push({ path: '/' })
+  },
+  resetToken() {
+    removeItem('token')
+    removeItem('username')
+    removeItem('role')
   }
 }
 

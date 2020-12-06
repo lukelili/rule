@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="title" :visible="visible" :width="width" :before-close="handleClose">
+  <el-dialog :title="title" :visible="visible" :width="width" :before-close="handleClose" :close-on-click-modal="false" :close-on-press-escape="false">
     <div class="model">
       <slot />
     </div>
