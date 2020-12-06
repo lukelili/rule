@@ -22,15 +22,36 @@ const actions = {
       Message.error(message)
       return
     }
-    const asyncRoutes = filterAsyncRoutes(data)
+    // 处理数据
+    const levelData = data.filter(item => item.level === 0)
+    const childData = data.filter(item => item.pid)
+    levelData.forEach(item => {
+      item.children = []
+      childData.find(child => {
+        if (child.pid === item._id) {
+          item.children.push(child)
+        }
+      })
+    })
+    const asyncRoutes = filterAsyncRoutes(levelData)
     commit('SET_ROUTES', asyncRoutes.concat(routes))
     return asyncRoutes
   }
 }
 function filterAsyncRoutes(routes) {
   const array = []
-  routes.forEach(route => {
-    route.component = resolve => require([route.component], resolve)
+  routes.forEach((route, index) => {
+    const children = route.children
+    if (Layout) {
+      route.path = '/' + index
+      route.component = Layout
+      route.redirect = children && children[0].path
+    } else {
+      route.component = resolve => require([`${route.path}`], resolve)
+    }
+    if (children && children.length) {
+      filterAsyncRoutes(children)
+    }
     array.push(route)
   })
   return array

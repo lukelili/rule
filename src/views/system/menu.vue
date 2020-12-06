@@ -102,7 +102,18 @@ export default {
           this.$message.error(mesaage)
           return
         }
-        tableOption.tableList = data
+        const levelData = data.filter(item => item.level === 0)
+        const childData = data.filter(item => item.pid)
+        levelData.forEach(item => {
+          item.children = []
+          childData.find(child => {
+            if (child.pid === item._id) {
+              item.children.push(child)
+            }
+          })
+        })
+        tableOption.tableList = levelData
+        console.log(tableOption.tableList)
       } catch (err) {
         console.log(err)
       }

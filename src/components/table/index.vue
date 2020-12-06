@@ -14,7 +14,16 @@
       </div>
     </div>
     <!-- 表格 -->
-    <el-table v-loading="tableOption.loading" :height="tableHeight" :data="tableOption.tableList" fit border :header-cell-style="{ backgroundColor:'#F5F7FA' }">
+    <el-table
+      v-loading="tableOption.loading"
+      :height="tableHeight"
+      :data="tableOption.tableList"
+      fit
+      border
+      row-key="_id"
+      :header-cell-style="{ backgroundColor:'#F5F7FA' }"
+      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+    >
       <!-- 复选框 -->
       <el-table-column v-if="tableOption.selection" type="selection" width="55" align="center" />
       <template v-for="item in tableOption.tHead">
