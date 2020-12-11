@@ -43,7 +43,6 @@ function filterAsyncRoutes(routes) {
   routes.forEach((route, index) => {
     const children = route.children
     if (Layout) {
-      route.path = '/' + index
       route.component = Layout
       route.redirect = children && children[0].path
     } else {
