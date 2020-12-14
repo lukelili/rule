@@ -1,173 +1,136 @@
 <template>
   <div class="container">
-    <v-search :search-item="searchItem" :search-data="searchData" @handleSearch="getMenuList" />
-    <v-table :options="tableOption">
-      <template v-slot:status="{ data }">
-        <el-switch v-model="data.status" :active-value="true" :inactive-value="false" active-color="#13ce66" inactive-color="#ff4949" />
-      </template>
-      <template v-slot:operation="{ data }">
-        <el-button size="mini" @click="handleAddChildMenu(data)">添加子集</el-button>
-        <el-button size="mini" type="primary" @click="handleEditMenu(data)">编辑</el-button>
-        <el-button size="mini" type="danger" @click="handleDeleteMenu(data)">删除</el-button>
-      </template>
-    </v-table>
-    <v-dialog :title="title" :visible.sync="visible">
-      <v-form :form-item="formItem" :form-data="formData" :visible.sync="visible" @submit="request" />
-    </v-dialog>
+  	<!-- <v-search>
+  		
+  	</v-search> -->
+  	<v-table :options="tableOption">
+  		<template v-slot:status="{ data }">
+  			<el-tag :type="isEnable[data.status].type">{{ isEnable[data.status].label }}</el-tag>
+  		</template>
+  		<template v-slot:operation="{ data }">
+  			<el-button type="default" size="mini" @click="handleChildAdd(data)">添加子集</el-button>
+  			<el-button type="primary" size="mini" @click="handleEdit(data)">编辑</el-button>
+  			<el-button type="danger" size="mini" @click="handleDelete(data)">删除</el-button>
+  		</template>
+  	</v-table>
+  	<v-dialog :visible.sync="isShow" :title="title">
+  		<v-form :form-item="formItem" :formData="formData" :visible.sync="isShow" @submit="submit"></v-form>
+  	</v-dialog>
   </div>
 </template>
 <script>
-import { MenuList, OperationMenu } from '@/api/system'
 export default {
-  data() {
-    return {
-      // 搜索
-      searchItem: [
-        {
-          type: 'input',
-          field: 'name',
-          label: '菜单名'
-        }
-      ],
-      searchData: {
-        name: ''
-      },
-      // 表格配置
-      tableOption: {
-        tHead: [
-          { label: '菜单', field: 'name' },
-          { label: '路由', field: 'path' },
-          { label: '路径', field: 'component' },
-          { label: '顺序', field: 'sort' },
-          { label: '状态', field: 'status', slotName: 'status' },
-          { label: '操作', field: 'operation', slotName: 'operation' }
-        ],
-        loading: false,
-        tableList: [],
-        operates: [
-          {
-            label: '添加目录',
-            type: 'success',
-            icon: 'el-icon-circle-plus-outline',
-            event: () => {
-              this.type = 'create'
-              this.title = '添加目录'
-              this.visible = true
-              this.formData.level = 0
-              delete this.formData._id
-              delete this.formData.pid
-            }
-          }
-        ]
-      },
-      // 添加 删除 弹窗配置
-      type: '',
-      title: '',
-      visible: false,
-      formItem: [
-        { type: 'input', field: 'name', label: '菜单' },
-        { type: 'input', field: 'path', label: '路由', required: true },
-        { type: 'input', field: 'component', label: '路径', required: true },
-        { type: 'input', field: 'sort', label: '顺序', rule: 'number' },
-        { type: 'radio', field: 'status', label: '状态', option: [
-          { label: '显示', value: true },
-          { label: '隐藏', value: false }
-        ] }
-      ],
-      formData: {
-        name: '',
+	data() {
+		return {
+			tableOption: {
+				operates: [
+					{
+						label: '添加目录',
+						event: () => this.handleAdd()
+					}
+				],
+				tHead: [
+					{ label: '菜单名称', field: 'name' },
+	        { label: '访问地址', field: 'path' },
+	        { label: '页面路径', field: 'filePath' },
+	        { label: '排序', field: 'sort' },
+	        { label: '状态', slotName: 'status' },
+	        { label: '操作', slotName: 'operation' },
+				],
+				tableList: [],
+				loading: false
+			},
+			isEnable: {
+				true: { label: '启用', type: 'success' },
+				false: { label: '禁用', type: 'danger' },
+			},
+			curd: '',
+			title: '',
+			isShow: false,
+			formItem: [
+				{ type: 'input', label: '角色名称', field: 'name' },
+				{ type: 'input', label: '访问地址', field: 'path' },
+				{ type: 'input', label: '文件路径', field: 'filePath', disabled: false },
+				{ type: 'input', label: '顺序', field: 'sort' },
+				{ type: 'radio', label: '状态', field: 'status', option: [
+					{ label: '启用', value: true },
+					{ label: '禁用', value: false }
+				]}
+			],
+			formData: {
+				name: '',
         path: '/',
-        component: '@/views/',
+        filePath: '',
         sort: '',
         status: true,
-        hidden: false
-      },
-      // 当前激活行的数据
-      activeRowData: {}
+        children: []
+			}
+		}
+	},
+	mounted() {
+		this.getTableList()
+	},
+	methods: {
+		// 表格列表
+		async getTableList() {
+      const table = this.tableOption
+      table.loading = true
+      const result = await this.$http.get('/menu')
+      table.loading = false
+      if (!result) return 
+      const { data } = result.data
+      table.tableList = this.cascade(data)
+    },
+    cascade(data) {
+    	const arr = []
+    	data.forEach(item => {
+    		item.children = []
+    		data.forEach(child => {
+    			if (item._id === child.pid) {
+    				item.children.push(child)
+    			}
+    		})
+    		arr.push(item)
+    	})
+    	return arr.filter(item => !item.pid)
+    },
+    // 提交
+    async submit() {
+      const result = await this.$http.post(`/menu${this.curd}`, this.formData)
+      if (!result) return
+      this.isShow = false
+      this.getTableList()
+    },
+    // 添加目录
+    handleAdd() {
+    	this.curd = '/create'
+    	this.title = '添加目录'
+      delete this.formData._id
+      delete this.formData.pid
+      this.isShow = true
+    },
+    // 添加子集
+    handleChildAdd(rowData) {
+    	this.curd = '/create'
+      this.title = `【${rowData.name}】添加子集`
+      this.formData.pid = rowData._id
+      this.isShow = true
+    },
+    // 编辑
+    handleEdit(rowData) {
+    	this.curd = '/update'
+    	this.title = '编辑目录'
+    	delete this.formData.pid
+    	this.formData._id = rowData._id
+      this.formData = Object.assign({}, this.formData, rowData)
+      this.isShow = true
+    },
+    // 删除
+    async handleDelete(rowData) {
+    	const res = await this.$http.post('/menu/delete',{ _id: rowData._id })
+      if (!res) return
+      this.getTableList()
     }
-  },
-  mounted() {
-    this.getMenuList()
-  },
-  methods: {
-    // 获取菜单
-    async getMenuList() {
-      const tableOption = this.tableOption
-      try {
-        tableOption.loading = true
-        const res = await MenuList(this.searchData)
-        tableOption.loading = false
-        const { code, data, mesaage } = res.data
-        if (code !== 200) {
-          this.$message.error(mesaage)
-          return
-        }
-        const levelData = data.filter(item => item.level === 0)
-        const childData = data.filter(item => item.pid)
-        levelData.forEach(item => {
-          item.children = []
-          childData.find(child => {
-            if (child.pid === item._id) {
-              item.children.push(child)
-            }
-          })
-        })
-        tableOption.tableList = levelData
-        console.log(tableOption.tableList)
-      } catch (err) {
-        console.log(err)
-      }
-    },
-    // 编辑目录
-    handleEditMenu(data) {
-      this.type = 'update'
-      this.title = '编辑菜单'
-      this.visible = true
-      this.activeRowData = data
-      this.$nextTick(() => {
-        this.$deepMatch(data, this.formData)
-        this.formData._id = data._id
-        delete this.formData.pid
-      })
-    },
-    // 添加子集菜单
-    handleAddChildMenu(data) {
-      this.type = 'create'
-      this.title = '添加子集'
-      this.visible = true
-      delete this.formData.level
-      this.formData.pid = data._id
-    },
-    // 删除菜单
-    async handleDeleteMenu(data) {
-      this.type = 'delete'
-      const res = await OperationMenu(this.type, { _id: data._id })
-      const { code, message } = res.data
-      if (code !== 200) {
-        this.$message.error(message)
-        return
-      }
-      this.$message.success('删除成功！')
-      this.getMenuList()
-    },
-    async request() {
-      const res = await OperationMenu(this.type, this.formData)
-      this.$store.commit('SET_LOADING', false)
-      const { code, message } = res.data
-      if (code !== 200) {
-        this.$message.error(message)
-        return
-      }
-      this.visible = false
-      this.$message.success('提交成功')
-      this.getMenuList()
-    }
-  }
+	}
 }
 </script>
-<style lang="scss" scoped>
-.header{
-  display: flex;
-  justify-content: flex-end;
-}
-</style>

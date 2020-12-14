@@ -20,7 +20,7 @@
       :data="tableOption.tableList"
       fit
       border
-      row-key="_id"
+      row-key="path"
       :header-cell-style="{ backgroundColor:'#F5F7FA' }"
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >

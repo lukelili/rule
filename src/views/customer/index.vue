@@ -12,8 +12,6 @@
   </div>
 </template>
 <script>
-import customer from '@a/customer'
-import global from '@a/global'
 export default {
   data() {
     const accountList = [
@@ -163,25 +161,8 @@ export default {
     }
   },
   mounted() {
-    global.orderType().then(res => {
-      // console.log(res)
-    })
   },
   methods: {
-    getTableList() {
-      const tableOptions = this.tableOptions
-      tableOptions.loading = true
-      customer.list().then(res => {
-        tableOptions.loading = false
-        const { code, message, data } = res.data
-        if (code === 0) {
-          tableOptions.total = data.total
-          tableOptions.tableList = data.list
-        } else {
-          this.$message.error(message)
-        }
-      })
-    },
     submitRequest() {
       console.log('提交成功')
       setTimeout(() => {

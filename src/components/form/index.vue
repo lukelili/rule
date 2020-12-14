@@ -6,7 +6,13 @@
           <!-- 插槽 -->
           <slot v-if="item.type === 'slot'" :name="item.slotName" />
           <!-- 输入框 -->
-          <el-input v-if="item.type === 'input'" v-model="formData[item.field]" :placeholder="'请输入' + item.label" :clearable="!item.clearable" />
+          <el-input
+            v-if="item.type === 'input'"
+            v-model="formData[item.field]"
+            :placeholder="'请输入' + item.label"
+            :clearable="!item.clearable"
+            :disabled="item.disabled"
+          />
           <el-radio-group v-if="item.type === 'radio'" v-model="formData[item.field]">
             <el-radio v-for="radio in item.option" :key="radio.value" border :label="radio.value">{{ radio.label }}</el-radio>
           </el-radio-group>
@@ -19,7 +25,7 @@
     </template>
     <div class="footer">
       <el-button type="default" @click="handleClose">取 消</el-button>
-      <el-button type="primary" class="confirm" :loading="btnLoading" @click="handleConfirm">提 交</el-button>
+      <el-button type="primary" class="confirm" @click="handleConfirm">提 交</el-button>
     </div>
   </el-form>
 </template>
@@ -77,7 +83,7 @@ export default {
     handleConfirm() {
       this.$refs.Form.validate(valid => {
         if (!valid) return
-        this.$store.commit('SET_LOADING', true)
+        // this.$store.commit('SET_LOADING', true)
         this.$emit('submit')
       })
     },

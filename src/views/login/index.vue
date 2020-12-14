@@ -2,30 +2,29 @@
   <div class="container-full">
     <div class="login-box">
       <div class="title">后台管理系统</div>
-      <el-form ref="form" :model="form" :rules="rules" label-width="0" class="login-form" @keydown.enter.native="sunbmitEvent('form')">
+      <el-form ref="form" :model="model" :rules="rules" label-width="0" class="login-form" @keydown.enter.native="sunbmit('form')">
         <el-form-item prop="username">
-          <el-input v-model="form.username" size="small" placeholder="请输入账号">
+          <el-input v-model="model.username" size="small" placeholder="请输入账号">
             <el-button slot="prepend" icon="el-icon-user-solid" />
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input v-model="form.password" type="password" size="small" placeholder="请输入密码">
+          <el-input v-model="model.password" type="password" size="small" placeholder="请输入密码">
             <el-button slot="prepend" class="iconfont iconmima" />
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" size="small" class="btn-full" :loading="btnLoading" @click="sunbmitEvent('form')">{{ btnLoginText }}</el-button>
+          <el-button type="primary" size="small" class="btn-full" @click="sunbmit('form')">登录</el-button>
         </el-form-item>
       </el-form>
     </div>
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
 export default {
   data() {
     return {
-      form: {
+      model: {
         username: 'lipeng',
         password: '123456'
       },
@@ -35,18 +34,20 @@ export default {
       }
     }
   },
-  computed: {
-    ...mapState({
-      btnLoading: state => state.user.btnLoading,
-      btnLoginText: state => state.user.btnLoginText
-    })
-  },
-  mounted() {},
   methods: {
-    sunbmitEvent(form) {
-      this.$refs[form].validate((valid) => {
+    sunbmit(form) {
+      this.$refs[form].validate(async (valid) => {
         if (!valid) return
-        this.$store.dispatch('user/login', this[form])
+        const result = await this.$http.post('/login', this.model)
+        if (!result) return
+        const data = result.data.data
+        const token = result.headers.token
+        this.$store.commit('user/SET_USERINFO', [
+          { key: 'role', value: data.role },
+          { key: 'token', value: token },
+          { key: 'username', value: data.username }
+        ])
+        this.$router.push('/')
       })
     }
   }

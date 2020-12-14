@@ -23,7 +23,7 @@ export function deepMatch(source, target) {
  * @param { property } key
  * @return { Boolean } 对象集合包含某属性 返回true
 */
-function isIn(target, key) {
+export function isIn(target, key) {
   return Object.prototype.hasOwnProperty.call(target, key)
 }
 
@@ -31,7 +31,7 @@ function isIn(target, key) {
  * @param { Object } data
  * @return { Boolean } 对象类型 返回true
  **/
-function isObject(data) {
+export function isObject(data) {
   return Object.prototype.toString.call(data) === '[object Object]'
 }
 

@@ -1,8 +1,6 @@
-import { RoleMenu } from '@a/user'
-import { Message } from 'element-ui'
-import { setItem } from '@/utils/storage'
 import { routes } from '@/router'
 import Layout from '@/layout'
+import http from '@/utils/request'
 
 const state = {
   routes: [],
@@ -11,49 +9,36 @@ const state = {
 const mutations = {
   SET_ROUTES(state, route) {
     state.addroutes = route
-    state.routes = route
+    state.routes = route.concat(routes)
   }
 }
 const actions = {
-  async roleMenu({ commit }) {
-    const res = await RoleMenu()
-    const { code, data, message } = res.data
-    if (code !== 200 && data.length) {
-      Message.error(message)
-      return
-    }
-    // 处理数据
-    const levelData = data.filter(item => item.level === 0)
-    const childData = data.filter(item => item.pid)
-    levelData.forEach(item => {
+  async roleMenus(context) {
+    const result = await http.get('/menu')
+    if (!result) return
+    const { data } = result.data
+    const asyncRoutes = await context.dispatch('cascade', data)
+    context.commit('SET_ROUTES', asyncRoutes)
+    return asyncRoutes
+  },
+  cascade(context, data) {
+    const arr = []
+    data.forEach(item => {
       item.children = []
-      childData.find(child => {
-        if (child.pid === item._id) {
+      if (!item.pid) {
+        item.component = Layout
+      } else {
+        item.component = resolve => require([`@/views${item.filePath}`], resolve)
+      }
+      data.forEach(child => {
+        if (item._id === child.pid) {
           item.children.push(child)
         }
       })
+      arr.push(item)
     })
-    const asyncRoutes = filterAsyncRoutes(levelData)
-    commit('SET_ROUTES', asyncRoutes.concat(routes))
-    return asyncRoutes
+    return arr.filter(item => !item.pid)
   }
-}
-function filterAsyncRoutes(routes) {
-  const array = []
-  routes.forEach((route, index) => {
-    const children = route.children
-    if (Layout) {
-      route.component = Layout
-      route.redirect = children && children[0].path
-    } else {
-      route.component = resolve => require([`${route.path}`], resolve)
-    }
-    if (children && children.length) {
-      filterAsyncRoutes(children)
-    }
-    array.push(route)
-  })
-  return array
 }
 export default {
   namespaced: true,
