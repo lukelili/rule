@@ -1,8 +1,5 @@
 const getters = {
-  routes: state => {
-    const routes = state.menu.routes
-    return routes.filter(item => !item.hidden)
-  },
+  routes: state => state.menu.routes,
   addroutes: state => state.menu.addroutes
 }
 

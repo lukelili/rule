@@ -19,6 +19,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 export default {
 	data() {
 		return {
@@ -35,7 +36,7 @@ export default {
 	        { label: '页面路径', field: 'filePath' },
 	        { label: '排序', field: 'sort' },
 	        { label: '状态', slotName: 'status' },
-	        { label: '操作', slotName: 'operation' },
+	        { label: '操作', slotName: 'operation', width: '240px' },
 				],
 				tableList: [],
 				loading: false
@@ -67,39 +68,24 @@ export default {
 			}
 		}
 	},
+	computed: {
+		...mapGetters(['addroutes'])
+	},
 	mounted() {
 		this.getTableList()
 	},
 	methods: {
 		// 表格列表
 		async getTableList() {
-      const table = this.tableOption
-      table.loading = true
-      const result = await this.$http.get('/menu')
-      table.loading = false
-      if (!result) return 
-      const { data } = result.data
-      table.tableList = this.cascade(data)
-    },
-    cascade(data) {
-    	const arr = []
-    	data.forEach(item => {
-    		item.children = []
-    		data.forEach(child => {
-    			if (item._id === child.pid) {
-    				item.children.push(child)
-    			}
-    		})
-    		arr.push(item)
-    	})
-    	return arr.filter(item => !item.pid)
+			this.tableOption.tableList = this.addroutes
     },
     // 提交
     async submit() {
       const result = await this.$http.post(`/menu${this.curd}`, this.formData)
       if (!result) return
       this.isShow = false
-      this.getTableList()
+      await this.$store.dispatch('menu/roleMenus')
+			this.getTableList()
     },
     // 添加目录
     handleAdd() {

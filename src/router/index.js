@@ -18,29 +18,7 @@ export const routes = [
     name: '首页',
     path: '/',
     component: Layout
-  },
-  {
-    name: '系统配置',
-    path: '/system',
-    component: resolve => require(['@/layout/index.vue'], resolve),
-    children: [
-      {
-        name: '账号管理',
-        path: '/account',
-        component: resolve => require(['@/views/system/account.vue'], resolve)
-      },
-      {
-        name: '角色管理',
-        path: '/roles',
-        component: resolve => require(['@/views/system/roles.vue'], resolve)
-      },
-      {
-        name: '菜单管理',
-        path: '/menu',
-        component: resolve => require(['@/views/system/menu.vue'], resolve)
-      }
-    ]
-  }
+  } 
 ]
 
 const createRouter = () => new VueRouter({

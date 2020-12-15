@@ -13,13 +13,28 @@
             :clearable="!item.clearable"
             :disabled="item.disabled"
           />
+          <!-- 单选按钮 -->
           <el-radio-group v-if="item.type === 'radio'" v-model="formData[item.field]">
-            <el-radio v-for="radio in item.option" :key="radio.value" border :label="radio.value">{{ radio.label }}</el-radio>
+            <el-radio
+              v-for="radio in item.option"
+              :key="radio.value"
+              border
+              :label="radio.value"
+            >{{ radio.label }}</el-radio>
           </el-radio-group>
           <!-- 下拉选择器 -->
           <v-select v-if="item.type === 'select'" :select-item="item" :select-data="formData" />
           <!-- 日期范围 -->
-          <el-date-picker v-if="item.type === 'datePicker'" v-model="date['date'+index]" type="daterange" value-format="yy-mm-dd" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" @change="dateChange($event, item)" />
+          <el-date-picker
+            v-if="item.type === 'datePicker'"
+            v-model="date['date'+index]"
+            type="daterange"
+            value-format="yy-mm-dd"
+            range-separator="-"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            @change="dateChange($event, item)"
+          />
         </template>
       </el-form-item>
     </template>
@@ -167,6 +182,11 @@ export default {
     }
     .confirm{
       padding: 10px 40px;
+    }
+  }
+  .el-radio-group{
+    .is-bordered{
+      margin-right: 0;
     }
   }
 }

@@ -24,7 +24,7 @@ import { mapState } from 'vuex'
 export default {
   data() {
     return {
-      activeIndex: '1'
+      activeIndex: this.$route.path
     }
   },
   computed: {
@@ -33,17 +33,7 @@ export default {
       routes: state => state.menu.routes
     })
   },
-  mounted() {
-    console.log()
-    this.getRoutes()
-  },
   methods: {
-    async getRoutes() {
-      const result = await this.$http.get('/menu')
-      if (!result) return
-      const { data } = result.data
-      console.log(data)
-    },
     handleSelect() {}
   }
 }

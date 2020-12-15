@@ -1,6 +1,7 @@
 const state = {
   scrollTop: 0,
-  isCollapse: false
+  isCollapse: false,
+  roles: []
 }
 const mutations = {
   SET_SCROLL_TOP(state, value) {
@@ -14,7 +15,9 @@ const mutations = {
 }
 
 const actions = {
+  getGlobalData({ commit }, parame) {
 
+  }
 }
 
 export default {

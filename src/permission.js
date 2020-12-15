@@ -11,8 +11,8 @@ const whiteList = ['/login']
 router.beforeEach(async (to, from, next) => {
   NProgress.start()
   if (getItem('token')) {
-    const { addroutes } = store.state.menu
-    if (addroutes && addroutes.length) {
+    const { routes } = store.state.menu
+    if (routes && routes.length) {
       next()
     } else {
       try{

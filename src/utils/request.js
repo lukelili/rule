@@ -27,8 +27,14 @@ instance.interceptors.response.use(option => {
 		return Promise.resolve(option)
 	}
 }, error => {
-	// 相应失败
-	console.log('相应失败', error)
+	const { status } = error.response
+	switch(status) {
+		case 500 :
+			Message.error('服务端发生错误，请稍后重试')
+			break
+	}
+	// 响应失败
+	console.log('响应失败', error)
 })
 
 export default instance

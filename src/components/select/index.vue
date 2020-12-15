@@ -69,7 +69,7 @@ export default {
       const defaultOption = this.defaultOption // 默认配置
       const data = selectItem.data
       this.$deepMatch(selectItem, defaultOption)
-      if (data === '' || !data.length || !Object.keys(data).length) {
+      if (data === '' && !data.length || !Object.keys(data).length) {
         this.defaultOption.data = []
         return
       }
