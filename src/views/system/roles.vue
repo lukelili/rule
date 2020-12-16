@@ -1,9 +1,7 @@
 <template>
   <div class="container">
-  	<!-- <v-search>
-  		
-  	</v-search> -->
-  	<v-table :options="tableOption">
+  	<v-search :search-item="searchItem" :search-data="searchData" @handleSearch="getTableList" />
+  	<v-table :options="tableOption" :search-data="searchData" @changePage="getTableList">
   		<template v-slot:status="{ data }">
   			<el-tag :type="isEnable[data.status].type">{{ isEnable[data.status].label }}</el-tag>
   		</template>
@@ -11,7 +9,7 @@
 				<el-tree
 					:data="showTree(data.menus)"
 					node-key="_id"
-					:props="treeProps">
+					:props="{ label: 'name' }">
 				</el-tree>
 			</template>
   		<template v-slot:operation="{ data }">
@@ -19,8 +17,8 @@
   			<el-button type="danger" size="mini" @click="handleDelete(data)">删除</el-button>
   		</template>
   	</v-table>
-  	<v-dialog :visible.sync="isShow" :title="title">
-  		<v-form :form-item="formItem" :formData="formData" :visible.sync="isShow" @submit="submit">
+  	<v-dialog :visible.sync="visible" :title="title">
+  		<v-form :form-item="formItem" :formData="formData" :visible.sync="visible" @submit="submit">
   			<template v-slot:menus>
   				<el-tree
 					  :data="addroutes"
@@ -28,7 +26,7 @@
 					  node-key="_id"
 						@check="handleTreeCheck"
 						:default-checked-keys="formData.menus"
-						:props="treeProps">
+						:props="{ label: 'name' }">
 					</el-tree>
   			</template>
   		</v-form>
@@ -39,7 +37,26 @@
 import { mapGetters } from 'vuex'
 export default {
 	data() {
+		const status = [
+			{ label: '启用', value: true },
+			{ label: '禁用', value: false }
+		]
 		return {
+			// 搜索配置
+			searchItem: [
+				{
+					type: 'select',
+					label: '状态',
+					field: 'status',
+					data: status
+				}
+			],
+			searchData: {
+				status: '',
+				pageSize: 5,
+				pageNum: 1
+			},
+			// 表格配置
 			tableOption: {
 				operates: [
 					{
@@ -54,15 +71,17 @@ export default {
 					{ label: '操作', slotName: 'operation', width: '160px' }
 				],
 				tableList: [],
-				loading: false
+				loading: false,
+				total: 0
 			},
 			isEnable: {
 				true: { label: '启用', type: 'success' },
 				false: { label: '禁用', type: 'danger' },
 			},
+			// 添加/编辑/删除
 			curd: '',
 			title: '',
-			isShow: false,
+			visible: false,
 			formItem: [
 				{ type: 'input', label: '角色名称', field: 'name' },
 				{
@@ -70,18 +89,12 @@ export default {
 					label: '菜单栏',
 					slotName: 'menus'
 				},
-				{ type: 'radio', label: '状态', field: 'status', option: [
-					{ label: '启用', value: true },
-					{ label: '禁用', value: false }
-				]}
+				{ type: 'radio', label: '状态', field: 'status', option: status}
 			],
 			formData: {
 				name: '',
 				menus: [],
 				status: true
-			},
-			treeProps: {
-				label: 'name'
 			}
 		}
 	},
@@ -96,18 +109,20 @@ export default {
 		async getTableList() {
       const table = this.tableOption
       table.loading = true
-      const result = await this.$http.get('/role')
+      const result = await this.$http.get(`/role?${this.$qs.stringify(this.searchData)}`)
       table.loading = false
       if (!result) return 
-			const { data } = result.data
-      table.tableList = data
+			const { data, total } = result.data.data
+			table.tableList = data
+			table.total = total
+			this.$store.commit('global/SET_DATA', { key: 'roles', value: data })
     },
 		// 添加
     handleAdd() {
     	this.curd = '/create'
     	this.title = '添加角色'
 			this.formData.menus = []
-    	this.isShow = true
+    	this.visible = true
     },
 		// 编辑
     handleEdit(rowData) {
@@ -117,25 +132,26 @@ export default {
 				this.formData = Object.assign({}, this.formData, rowData)
 				this.formData.menus = rowData.menus.map(item => item._id)
 			})
-    	this.isShow = true
+    	this.visible = true
     },
 		// 删除
-    handleDelete() {
-    	this.curd = '/create'
-    	this.title = '添加角色'
-    	this.isShow = true
+    async handleDelete(rowData) {
+    	const result = await this.$http.post(`/role/delete`, { _id: rowData._id })
+			if (!result) return
+			this.getTableList()
     },
 		// 提交
 		async submit() {
 			const result = await this.$http.post(`/role${this.curd}`, this.formData)
 			if (!result) return
-			this.isShow = false
+			this.visible = false
 			this.getTableList()
 		},
 		// 获取选中的菜单
 		handleTreeCheck(nodes, keys) {
 			this.formData.menus = keys.checkedKeys
 		},
+		// 将一维数据转换成级联数据
 		showTree(data) {
 			const arr = []
 			data.forEach(item => {

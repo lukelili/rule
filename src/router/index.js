@@ -18,7 +18,7 @@ export const routes = [
     name: '首页',
     path: '/',
     component: Layout
-  } 
+  }
 ]
 
 const createRouter = () => new VueRouter({

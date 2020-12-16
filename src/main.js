@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import qs from 'qs'
 import request from '@/utils/request'
 // 工具
 import './utils/tools'
@@ -18,6 +19,7 @@ Vue.use(ElementUI, {
 })
 Vue.config.productionTip = false
 Vue.prototype.$http = request
+Vue.prototype.$qs = qs
 // 滚动条
 import vuescroll from 'vuescroll'
 Vue.use(vuescroll, {

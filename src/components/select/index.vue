@@ -64,7 +64,7 @@ export default {
     }
   },
   methods: {
-    focus() {
+    async focus() {
       const selectItem = this.selectItem // 传入的配置
       const defaultOption = this.defaultOption // 默认配置
       const data = selectItem.data
@@ -76,9 +76,13 @@ export default {
       // 私有数据
       if (typeof data === 'object') {
         this.defaultOption.data = data
+        return
+      }
       // 共享数据
-      } else {
-        console.log(data)
+      if (typeof data === 'string') {
+        const vuexData = await this.$store.getters[data]
+        this.defaultOption.data = vuexData
+        return
       }
     }
   }

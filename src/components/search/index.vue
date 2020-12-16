@@ -11,8 +11,8 @@
       </el-form-item>
     </template>
     <el-form-item>
-      <el-button icon="el-icon-search" type="danger" @click="btnSearch">搜索</el-button>
-      <el-button type="default" @click="btnReset">重置</el-button>
+      <el-button icon="el-icon-search" type="danger" @click="handleBtnSearch">搜索</el-button>
+      <el-button type="default" @click="handleBtnReset">重置</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -49,18 +49,18 @@ export default {
   },
   methods: {
     // 搜索按钮
-    btnSearch() {
+    handleBtnSearch() {
       this.$emit('handleSearch', this.searchData)
     },
     // 重置按钮 //就因为后端要拆解日期参数 我要写这么多代码
-    btnReset() {
+    handleBtnReset() {
       this.$refs.searchForm.resetFields()
       // for (const key in this.searchData) {
       //   this.searchData[key] = ''
       // }
       // this.searchData.pageSize = 10
       // this.searchData.pageNumber = 1
-      this.btnSearch()
+      this.handleBtnSearch()
     }
   }
 }

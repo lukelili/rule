@@ -6,7 +6,6 @@ import menu from './modules/menu'
 import global from './modules/global'
 import event from './modules/event'
 import data from './modules/data'
-
 Vue.use(Vuex)
 export default new Vuex.Store({
   getters,

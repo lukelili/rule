@@ -43,11 +43,11 @@
     <div v-if="tableOption.total" class="page">
       <el-pagination
         background
-        :current-page="page.pageNumber"
-        :page-sizes="[20, 40, 60, 100]"
+        :current-page="page.pageNum"
+        :page-sizes="[5, 20, 60, 80]"
         :page-size="page.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="100"
+        :total="tableOption.total"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
       />
@@ -63,7 +63,7 @@ export default {
       type: Object,
       required: true
     },
-    param: {
+    searchData: {
       type: Object,
       default: () => {}
     }
@@ -100,7 +100,7 @@ export default {
       },
       page: {
         pageNumber: 1,
-        pageSize: 10
+        pageSize: 5
       }
     }
   },
@@ -129,13 +129,13 @@ export default {
       const searchWrap = document.querySelector('#search-wrapper')
       const searchHeight = (searchWrap && searchWrap.clientHeight) || 0
       // 搜索框高 + 面包屑高 + 表格操作栏高 + 分页高 + 上下的内边距
-      const height = searchHeight + breadcrumb.clientHeight + 51 + 42 + 20
+      const height = searchHeight + breadcrumb.clientHeight + 51 + 60 + 20
       this.tableHeight = window.innerHeight - height
     },
     // 初始化配置参数
     initOPtion() {
-      this.param && this.$deepMatch(this.param, this.page)
-      this.$deepMatch(this.options, this.tableOption)
+      this.searchData && this.$deepMatch(this.searchData, this.page)
+      this.options && this.$deepMatch(this.options, this.tableOption)
     },
     // 操作按钮事件
     operateEvent(event) {
@@ -143,13 +143,13 @@ export default {
     },
     // 页码
     handleSizeChange(size) {
-      this.param.pageSize = size
-      this.$emit('pageChange')
+      this.searchData.pageSize = size
+      this.$emit('changePage')
     },
     // 翻页
     handleCurrentChange(num) {
-      this.param.pageNumber = num
-      this.$emit('pageChange')
+      this.searchData.pageNum = num
+      this.$emit('changePage')
     }
   }
 }

@@ -4,15 +4,21 @@
   		
   	</v-search> -->
   	<v-table :options="tableOption">
-  		<template v-slot:status="{ data }">
-  			<el-tag :type="isEnable[data.status].type">{{ isEnable[data.status].label }}</el-tag>
-  		</template>
+			<template v-slot:gender="{ data }">
+				{{ genders[data.gender] }}
+			</template>
 			<template v-slot:menus="{ data }">
 				<el-tree
 					:data="showTree(data.menus)"
 					node-key="_id"
 					:props="treeProps">
 				</el-tree>
+			</template>
+			<template v-slot:role="{ data }">
+				{{ data.role.name }}
+			</template>
+			<template v-slot:status="{ data }">
+				<el-tag :type="isEnable[data.status].type">{{ isEnable[data.status].label }}</el-tag>
 			</template>
   		<template v-slot:operation="{ data }">
   			<el-button type="primary" size="mini" @click="handleEdit(data)">编辑</el-button>
@@ -36,7 +42,7 @@
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 export default {
 	data() {
 		return {
@@ -51,7 +57,8 @@ export default {
 					{ label: '姓名', field: 'name' },
 					{ label: '性别', slotName: 'gender' },
           { label: '手机号', field: 'phone' },
-          { label: '角色', field: 'role' },
+					{ label: '角色', slotName: 'role' },
+					{ label: '状态', slotName: 'status' },
 					{ label: '操作', slotName: 'operation', width: '160px' }
 				],
 				tableList: [],
@@ -70,8 +77,11 @@ export default {
 					{ label: '男', value: 'male' },
 					{ label: '女', value: 'woman' }
 				] },
-        { type: 'input', label: '手机号', slotName: 'phone' },
-        { type: 'select', label: '角色', field: 'phone', data: 'roles' },
+        { type: 'input', label: '手机号', field: 'phone' },
+        { type: 'select', label: '角色', field: 'role', data: 'roles', props: {
+					label: 'name',
+					value: '_id'
+				} },
 				{ type: 'radio', label: '状态', field: 'status', option: [
 					{ label: '启用', value: true },
 					{ label: '禁用', value: false }
@@ -90,7 +100,10 @@ export default {
 		}
 	},
 	computed: {
-		...mapGetters(['addroutes'])
+		...mapGetters(['addroutes']),
+		...mapState({
+			genders: state => state.global.genders
+		})
 	},
 	mounted() {
 		this.getTableList()
