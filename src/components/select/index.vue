@@ -39,7 +39,7 @@ export default {
       defaultOption: {
         label: '',
         field: '',
-        clearable: true,
+        clearable: false,
         hideAll: false,
         data: [],
         /**
@@ -63,8 +63,14 @@ export default {
       }
     }
   },
+  mounted() {
+    this.initData()
+  },
   methods: {
-    async focus() {
+    focus() {
+      this.initData()
+    },
+    async initData() {
       const selectItem = this.selectItem // 传入的配置
       const defaultOption = this.defaultOption // 默认配置
       const data = selectItem.data

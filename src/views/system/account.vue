@@ -54,10 +54,11 @@ export default {
 					}
 				],
 				tHead: [
-					{ label: '姓名', field: 'name' },
+					{ label: '后台账号', field: 'username' },
+					{ label: '账号角色', slotName: 'role' },
+					{ label: '真实姓名', field: 'name' },
 					{ label: '性别', slotName: 'gender' },
-          { label: '手机号', field: 'phone' },
-					{ label: '角色', slotName: 'role' },
+          { label: '手机号码', field: 'phone' },
 					{ label: '状态', slotName: 'status' },
 					{ label: '操作', slotName: 'operation', width: '160px' }
 				],
@@ -72,16 +73,18 @@ export default {
 			title: '',
 			isShow: false,
 			formItem: [
-				{ type: 'input', label: '姓名', field: 'name' },
+				{ type: 'input', label: '后台账号', field: 'username', required: true },
+				{ type: 'input', label: '后台密码', field: 'password', required: true },
+				{ type: 'select', label: '账号角色', field: 'role', required: true, data: 'roles', props: {
+					label: 'name',
+					value: '_id'
+				} },
+				{ type: 'input', label: '真实姓名', field: 'name', required: true },
         { type: 'radio', label: '性别', field: 'gender', option: [
 					{ label: '男', value: 'male' },
 					{ label: '女', value: 'woman' }
 				] },
-        { type: 'input', label: '手机号', field: 'phone' },
-        { type: 'select', label: '角色', field: 'role', data: 'roles', props: {
-					label: 'name',
-					value: '_id'
-				} },
+				{ type: 'input', label: '手机号码', field: 'phone', required: true },
 				{ type: 'radio', label: '状态', field: 'status', option: [
 					{ label: '启用', value: true },
 					{ label: '禁用', value: false }
@@ -131,6 +134,7 @@ export default {
     	this.title = '编辑账号'
 			this.$nextTick(() => {
 				this.formData = Object.assign({}, this.formData, rowData)
+				this.formData.role = rowData.role._id
 			})
     	this.isShow = true
     },

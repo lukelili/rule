@@ -21,6 +21,7 @@
   		<v-form :form-item="formItem" :formData="formData" :visible.sync="visible" @submit="submit">
   			<template v-slot:menus>
   				<el-tree
+						ref="tree"
 					  :data="addroutes"
 					  show-checkbox
 					  node-key="_id"
@@ -115,13 +116,13 @@ export default {
 			const { data, total } = result.data.data
 			table.tableList = data
 			table.total = total
-			this.$store.commit('global/SET_DATA', { key: 'roles', value: data })
+			this.$store.dispatch('global/getData', { key: 'roles', api: '/role/filter' })
     },
 		// 添加
     handleAdd() {
     	this.curd = '/create'
     	this.title = '添加角色'
-			this.formData.menus = []
+			this.setCheckedKeys([])
     	this.visible = true
     },
 		// 编辑
@@ -131,6 +132,7 @@ export default {
 			this.$nextTick(() => {
 				this.formData = Object.assign({}, this.formData, rowData)
 				this.formData.menus = rowData.menus.map(item => item._id)
+				this.setCheckedKeys(this.formData.menus)
 			})
     	this.visible = true
     },
@@ -150,6 +152,9 @@ export default {
 		// 获取选中的菜单
 		handleTreeCheck(nodes, keys) {
 			this.formData.menus = keys.checkedKeys
+		},
+		setCheckedKeys(checks) {
+			this.$refs.tree.setCheckedKeys(checks)
 		},
 		// 将一维数据转换成级联数据
 		showTree(data) {

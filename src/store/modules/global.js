@@ -18,6 +18,7 @@ const mutations = {
 const actions = {
   async getData({ commit }, parame) {
     const result = await http.get(parame.api)
+    if (!result) return
     const { code, data, message} = result.data
     if (code !== 200) {
       return []

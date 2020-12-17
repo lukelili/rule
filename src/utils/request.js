@@ -32,6 +32,9 @@ instance.interceptors.response.use(option => {
 		case 500 :
 			Message.error('服务端发生错误，请稍后重试')
 			break
+		case 404 :
+			Message.error('当前请求的资源不存在！')
+			break
 	}
 	// 响应失败
 	console.log('响应失败', error)
