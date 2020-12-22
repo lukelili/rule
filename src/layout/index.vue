@@ -1,8 +1,8 @@
 <template>
   <el-container id="app-wrapper">
-    <el-aside />
+    <Vaside />
     <el-container direction="vertical">
-      <Breadcrumb />
+      <Vheader />
       <keep-alive>
         <div class="app-main">
           <router-view />
@@ -12,9 +12,9 @@
   </el-container>
 </template>
 <script>
-import Breadcrumb from './breadcrumb/index.vue'
-import elAside from './elAside/index'
+import Vheader from './Vheader/'
+import Vaside from './Vaside/'
 export default {
-  components: { elAside, Breadcrumb }
+  components: { Vaside, Vheader }
 }
 </script>

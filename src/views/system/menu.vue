@@ -1,9 +1,11 @@
 <template>
   <div class="container">
   	<!-- <v-search>
-  		
   	</v-search> -->
   	<v-table :options="tableOption">
+			<template v-slot:icon="{ data }">
+				<i :class="data.icon" style="font-size: 16px"></i>
+			</template>
   		<template v-slot:status="{ data }">
   			<el-tag :type="isEnable[data.status].type">{{ isEnable[data.status].label }}</el-tag>
   		</template>
@@ -32,6 +34,7 @@ export default {
 				],
 				tHead: [
 					{ label: '菜单名称', field: 'name' },
+					{ label: '图标', slotName: 'icon' },
 	        { label: '访问地址', field: 'path' },
 	        { label: '页面路径', field: 'filePath' },
 	        { label: '排序', field: 'sort' },
@@ -49,7 +52,8 @@ export default {
 			title: '',
 			isShow: false,
 			formItem: [
-				{ type: 'input', label: '角色名称', field: 'name' },
+				{ type: 'input', label: '菜单名称', field: 'name' },
+				{ type: 'input', label: '图标', field: 'icon' },
 				{ type: 'input', label: '访问地址', field: 'path' },
 				{ type: 'input', label: '文件路径', field: 'filePath', disabled: false },
 				{ type: 'input', label: '顺序', field: 'sort' },

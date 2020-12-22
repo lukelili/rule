@@ -1,12 +1,12 @@
 <template>
   <el-aside :class="{'down': isCollapse}">
     <vuescroll>
-      <el-menu :default-active="activeIndex" :collapse="isCollapse" class="el-menu-demo" mode="vertical" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" router @select="handleSelect">
+      <el-menu :default-active="activeIndex" :collapse="isCollapse" class="el-menu-vertical-demo" mode="vertical" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" router @select="handleSelect">
         <template v-for="route in routes">
           <template v-if="!route.hidden">
             <el-submenu :key="route.path" :index="route.path">
               <template slot="title">
-                <!-- <i class="el-icon-menu" /> -->
+                <i :class="route.icon" />
                 <span slot="title">{{ route.name }}</span>
               </template>
               <template v-for="child in route.children">
@@ -22,6 +22,7 @@
 <script>
 import { mapState } from 'vuex'
 export default {
+  name: 'Vaside',
   data() {
     return {
       activeIndex: this.$route.path
@@ -39,10 +40,14 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+ .el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 200px;
+    min-height: 400px;
+  }
 .el-aside{
   width: 200px !important;
   height: 100%;
-  transition: .2s;
+  transition: .3s;
   background-color: rgb(84, 92, 100);
   .el-menu{
     border-right: none;
@@ -50,6 +55,6 @@ export default {
 }
 .down{
   width: 64px !important;
-  transition: .2s;
+  transition: .3s;
 }
 </style>

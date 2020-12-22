@@ -13,12 +13,13 @@ export const routes = [
     path: '/login',
     hidden: true,
     component: resolve => require(['@/views/login/index.vue'], resolve)
-  },
-  {
-    name: '首页',
-    path: '/',
-    component: Layout
   }
+  // {
+  //   name: '首页',
+  //   path: '/',
+  //   icon: 'el-icon-monitor',
+  //   component: Layout
+  // }
 ]
 
 const createRouter = () => new VueRouter({

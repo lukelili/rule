@@ -1,7 +1,7 @@
 <template>
   <div class="header-bar">
     <div class="menu-btn" @click="handleIsOpenMenu">
-      <i class="el-icon-s-fold" />
+      <i :class="isCollapse ? 'el-icon-s-unfold' : 'el-icon-s-fold'" />
     </div>
     <el-breadcrumb separator="/">
       <el-breadcrumb-item v-for="item in levelList" :key="item.path">{{ item.name }}</el-breadcrumb-item>
@@ -11,6 +11,7 @@
 <script>
 import { mapState } from 'vuex'
 export default {
+  name: 'Vheader',
   data() {
     return {
       levelList: []
@@ -31,7 +32,7 @@ export default {
   },
   methods: {
     handleIsOpenMenu() {
-      this.$store.commit('SET_DATA', { key: 'isCollapse', value: !this.isCollapse })
+      this.$store.commit('global/SET_DATA', { key: 'isCollapse', value: !this.isCollapse })
     }
   }
 }
