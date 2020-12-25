@@ -30,4 +30,10 @@ const createRouter = () => new VueRouter({
 
 const router = createRouter()
 
+// 重置路由
+export function resetRouter() {
+  const newRouter = createRouter()
+  router.matcher = newRouter.matcher // the relevant part
+}
+
 export default router

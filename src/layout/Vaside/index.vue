@@ -1,6 +1,6 @@
 <template>
   <el-aside :class="{'down': isCollapse}">
-    <vuescroll>
+    <vuescroll :ops="scrollOps">
       <el-menu :default-active="activeIndex" :collapse="isCollapse" class="el-menu-vertical-demo" mode="vertical" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" router @select="handleSelect">
         <template v-for="route in routes">
           <template v-if="!route.hidden">
@@ -25,7 +25,16 @@ export default {
   name: 'Vaside',
   data() {
     return {
-      activeIndex: this.$route.path
+      activeIndex: this.$route.path,
+      scrollOps: {
+        bar: {
+          background: '#eee',
+          opacity: .2
+        },
+        vuescroll: {
+          wheelScrollDuration: 800
+        }
+      }
     }
   },
   computed: {

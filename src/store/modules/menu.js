@@ -10,11 +10,15 @@ const mutations = {
   SET_ROUTES(state, route) {
     state.addroutes = route
     state.routes = route.concat(routes)
+  },
+  RESET_ROUTES(state, route) {
+    state.addroutes = []
+    state.routes = []
   }
 }
 const actions = {
   async roleMenus(context) {
-    const result = await http.get('/menu')
+    const result = await http.get('/rest/query/menu')
     if (!result) return
     const { data } = result.data
     const asyncRoutes = await context.dispatch('cascade', data)

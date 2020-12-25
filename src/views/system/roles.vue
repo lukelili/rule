@@ -1,7 +1,7 @@
 <template>
   <div class="container">
   	<v-search :search-item="searchItem" :search-data="searchData" @handleSearch="getTableList" />
-  	<v-table :options="tableOption" :search-data="searchData" @changePage="getTableList">
+  	<v-table :options="tableOption" :search-data="searchData" @refresh="getTableList" @changePage="getTableList">
   		<template v-slot:status="{ data }">
   			<el-tag :type="isEnable[data.status].type">{{ isEnable[data.status].label }}</el-tag>
   		</template>
@@ -67,9 +67,9 @@ export default {
 				],
 				tHead: [
 					{ label: '角色名称', field: 'name' },
-					{ label: '菜单栏', slotName: 'menus' },
-					{ label: '状态', slotName: 'status' },
-					{ label: '操作', slotName: 'operation', width: '160px' }
+					{ label: '菜单栏', field: 'menus', slotName: 'menus' },
+					{ label: '状态', field: 'status', slotName: 'status' },
+					{ label: '操作', field: 'operation', slotName: 'operation', width: '160px' }
 				],
 				tableList: [],
 				loading: false,
@@ -110,24 +110,24 @@ export default {
 		async getTableList() {
       const table = this.tableOption
       table.loading = true
-      const result = await this.$http.get(`/role?${this.$qs.stringify(this.searchData)}`)
-      table.loading = false
-      if (!result) return 
+      const result = await this.$http.get(`/rest/query/role?${this.$qs.stringify(this.searchData)}`)
+			table.loading = false
+      if (!result) return
 			const { data, total } = result.data.data
 			table.tableList = data
 			table.total = total
-			this.$store.dispatch('global/getData', { key: 'roles', api: '/role/filter' })
+			// this.$store.dispatch('global/getData', { key: 'roles', api: '/role/filter' })
     },
 		// 添加
     handleAdd() {
-    	this.curd = '/create'
+    	this.curd = 'create'
     	this.title = '添加角色'
 			this.setCheckedKeys([])
     	this.visible = true
     },
 		// 编辑
     handleEdit(rowData) {
-    	this.curd = '/update'
+    	this.curd = 'update'
     	this.title = '编辑角色'
 			this.$nextTick(() => {
 				this.formData = Object.assign({}, this.formData, rowData)
@@ -138,13 +138,13 @@ export default {
     },
 		// 删除
     async handleDelete(rowData) {
-    	const result = await this.$http.post(`/role/delete`, { _id: rowData._id })
+    	const result = await this.$http.post(`/rest/delete/role`, { _id: rowData._id })
 			if (!result) return
 			this.getTableList()
     },
 		// 提交
 		async submit() {
-			const result = await this.$http.post(`/role${this.curd}`, this.formData)
+			const result = await this.$http.post(`/rest/${this.curd}/role`, this.formData)
 			if (!result) return
 			this.visible = false
 			this.getTableList()

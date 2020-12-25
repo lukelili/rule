@@ -116,7 +116,7 @@ export default {
 		async getTableList() {
       const table = this.tableOption
       table.loading = true
-      const result = await this.$http.get('/account')
+      const result = await this.$http.get('/rest/query/account')
       table.loading = false
       if (!result) return 
 			const { data } = result.data
@@ -124,13 +124,13 @@ export default {
     },
 		// 添加
     handleAdd() {
-    	this.curd = '/create'
+    	this.curd = 'create'
     	this.title = '添加账号'
     	this.isShow = true
     },
 		// 编辑
     handleEdit(rowData) {
-    	this.curd = '/update'
+    	this.curd = 'update'
     	this.title = '编辑账号'
 			this.$nextTick(() => {
 				this.formData = Object.assign({}, this.formData, rowData)
@@ -140,13 +140,13 @@ export default {
     },
 		// 删除
     handleDelete() {
-    	this.curd = '/create'
-    	this.title = '添加账号'
+    	this.curd = 'create'
+    	this.title = '删除账号'
     	this.isShow = true
     },
 		// 提交
 		async submit() {
-			const result = await this.$http.post(`/account${this.curd}`, this.formData)
+			const result = await this.$http.post(`/rest/${this.curd}/account`, this.formData)
 			if (!result) return
 			this.isShow = false
 			this.getTableList()

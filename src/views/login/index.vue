@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       model: {
-        username: 'lipeng',
+        username: 'liudehua',
         password: '123456'
       },
       rules: {

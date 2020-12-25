@@ -33,8 +33,8 @@ export default {
 					}
 				],
 				tHead: [
-					{ label: '菜单名称', field: 'name' },
 					{ label: '图标', slotName: 'icon' },
+					{ label: '菜单名称', field: 'name' },
 	        { label: '访问地址', field: 'path' },
 	        { label: '页面路径', field: 'filePath' },
 	        { label: '排序', field: 'sort' },
@@ -75,7 +75,7 @@ export default {
 	computed: {
 		...mapGetters(['addroutes'])
 	},
-	mounted() {
+	async mounted() {
 		this.getTableList()
 	},
 	methods: {
@@ -85,7 +85,7 @@ export default {
     },
     // 提交
     async submit() {
-      const result = await this.$http.post(`/menu${this.curd}`, this.formData)
+      const result = await this.$http.post(`/rest/${this.curd}/menu`, this.formData)
       if (!result) return
       this.isShow = false
       await this.$store.dispatch('menu/roleMenus')
@@ -93,7 +93,7 @@ export default {
     },
     // 添加目录
     handleAdd() {
-    	this.curd = '/create'
+    	this.curd = 'create'
     	this.title = '添加目录'
       delete this.formData._id
       delete this.formData.pid
@@ -101,14 +101,14 @@ export default {
     },
     // 添加子集
     handleChildAdd(rowData) {
-    	this.curd = '/create'
+    	this.curd = 'create'
       this.title = `【${rowData.name}】添加子集`
       this.formData.pid = rowData._id
       this.isShow = true
     },
     // 编辑
     handleEdit(rowData) {
-    	this.curd = '/update'
+    	this.curd = 'update'
     	this.title = '编辑目录'
     	delete this.formData.pid
     	this.formData._id = rowData._id
@@ -117,7 +117,7 @@ export default {
     },
     // 删除
     async handleDelete(rowData) {
-    	const res = await this.$http.post('/menu/delete',{ _id: rowData._id })
+    	const res = await this.$http.post('/rest/delete/menu',{ _id: rowData._id })
       if (!res) return
       this.getTableList()
     }

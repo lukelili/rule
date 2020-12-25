@@ -10,7 +10,20 @@
         <template v-for="(item, index) in tableOption.operates">
           <el-button :key="index" :icon="item.icon" :type="item.type" @click="operateEvent(item.event)">{{ item.label }}</el-button>
         </template>
-        <el-button icon="el-icon-refresh" type="default">刷新</el-button>
+        <el-button icon="el-icon-refresh" type="default" @click="handleRefresh">刷新</el-button>
+        <!-- 显示列 -->
+        <el-dropdown class="show-col" :hide-on-click="false">
+          <el-button type="default">
+            显示列<i class="el-icon-arrow-down el-icon--right"></i>
+          </el-button>
+          <el-dropdown-menu slot="dropdown">
+            <el-checkbox-group v-model="checkCols" @change="handleChangeShowCol">
+              <el-dropdown-item v-for="item of options.tHead" :key="item.field">
+                <el-checkbox :label="item.field">{{ item.label }}</el-checkbox>
+              </el-dropdown-item>
+            </el-checkbox-group>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
     </div>
     <!-- 表格 -->
@@ -71,6 +84,7 @@ export default {
   data() {
     return {
       tableHeight: 0,
+      // 表格默认配置
       tableOption: {
         name: '数据列表',
         /** operates 表格头部操作按钮数组对象 每个对象包含以下配置参数
@@ -98,10 +112,12 @@ export default {
         // 数据条数
         total: 0
       },
+      // 表格分页
       page: {
         pageNumber: 1,
         pageSize: 5
-      }
+      },
+      checkCols: []
     }
   },
   watch: {
@@ -123,6 +139,7 @@ export default {
     window.removeEventListener('resize', this.resize)
   },
   methods: {
+    // 根据屏幕大小调整页面的宽高
     resize() {
       this.tableHeight = 0
       const breadcrumb = document.querySelector('.header-bar')
@@ -134,8 +151,10 @@ export default {
     },
     // 初始化配置参数
     initOPtion() {
+      if (!this.options) return
       this.searchData && this.$deepMatch(this.searchData, this.page)
-      this.options && this.$deepMatch(this.options, this.tableOption)
+      this.$deepMatch(this.options, this.tableOption)
+      this.checkCols = this.options.tHead.filter(item => !item.hidden).map(item => item.field)
     },
     // 操作按钮事件
     operateEvent(event) {
@@ -150,6 +169,17 @@ export default {
     handleCurrentChange(num) {
       this.searchData.pageNum = num
       this.$emit('changePage')
+    },
+    // 刷新
+    handleRefresh() {
+      this.$emit('refresh')
+    },
+    // 要显示的列
+    handleChangeShowCol(val) {
+      const tHead = this.tableOption.tHead
+      tHead.forEach(item => {
+        if (this.checkCols.includes(item.field)) {}
+      })
     }
   }
 }
@@ -186,6 +216,9 @@ export default {
     .el-pagination{
       padding: 2px 0;
     }
+  }
+  .show-col{
+    margin-left: 10px;
   }
 }
 </style>

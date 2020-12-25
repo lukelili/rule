@@ -7,7 +7,7 @@ const getters = {
     if (roles && roles.length) {
       return roles
     }
-    return await store.dispatch('global/getData', { key: 'roles', api: '/role/filter' })
+    // return await store.dispatch('global/getData', { key: 'roles', api: '/role/filter' })
   }
 }
 
