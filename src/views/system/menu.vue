@@ -33,8 +33,8 @@ export default {
 					}
 				],
 				tHead: [
-					{ label: '图标', slotName: 'icon' },
 					{ label: '菜单名称', field: 'name' },
+					{ label: '图标', slotName: 'icon' },
 	        { label: '访问地址', field: 'path' },
 	        { label: '页面路径', field: 'filePath' },
 	        { label: '排序', field: 'sort' },

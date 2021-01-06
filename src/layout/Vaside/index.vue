@@ -1,7 +1,7 @@
 <template>
   <el-aside :class="{'down': isCollapse}">
     <vuescroll :ops="scrollOps">
-      <el-menu :default-active="activeIndex" :collapse="isCollapse" class="el-menu-vertical-demo" mode="vertical" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" router @select="handleSelect">
+      <el-menu :default-active="activeIndex" :collapse="isCollapse" class="el-menu-vertical-demo" mode="vertical" background-color="#333640" text-color="#8f939a" active-text-color="#3ab2a4" router @select="handleSelect">
         <template v-for="route in routes">
           <template v-if="!route.hidden">
             <el-submenu :key="route.path" :index="route.path">
@@ -57,7 +57,7 @@ export default {
   width: 200px !important;
   height: 100%;
   transition: .3s;
-  background-color: rgb(84, 92, 100);
+  background-color: #333640;
   .el-menu{
     border-right: none;
   }

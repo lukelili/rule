@@ -178,7 +178,10 @@ export default {
     handleChangeShowCol(val) {
       const tHead = this.tableOption.tHead
       tHead.forEach(item => {
-        if (this.checkCols.includes(item.field)) {}
+        this.$delete(item, 'hidden')
+        if (!this.checkCols.includes(item.field)) {
+          this.$set(item, 'hidden', true)
+        }
       })
     }
   }

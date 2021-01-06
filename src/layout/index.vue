@@ -3,11 +3,13 @@
     <Vaside />
     <el-container direction="vertical">
       <Vheader />
-      <keep-alive>
-        <div class="app-main">
-          <router-view />
-        </div>
-      </keep-alive>
+      <transition name="fade-transform" mode="out-in">
+        <keep-alive>
+          <div class="app-main">
+            <router-view />
+          </div>
+        </keep-alive>
+      </transition>
     </el-container>
   </el-container>
 </template>
