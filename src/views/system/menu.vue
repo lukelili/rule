@@ -34,9 +34,9 @@ export default {
 				],
 				tHead: [
 					{ label: '菜单名称', field: 'name' },
-					{ label: '图标', slotName: 'icon' },
 	        { label: '访问地址', field: 'path' },
-	        { label: '页面路径', field: 'filePath' },
+					{ label: '页面路径', field: 'filePath' },
+					{ label: '图标', slotName: 'icon' },
 	        { label: '排序', field: 'sort' },
 	        { label: '状态', slotName: 'status' },
 	        { label: '操作', slotName: 'operation', width: '240px' },

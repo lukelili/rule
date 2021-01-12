@@ -1,7 +1,7 @@
 import { setItem, getItem, clear } from '@/utils/storage'
 import { isIn } from '@/utils/tools'
 const state = {
-  role: getItem('role'),
+  roles: getItem('roles'),
   token: getItem('token'),
   username: getItem('username')
 }

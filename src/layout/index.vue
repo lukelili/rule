@@ -11,12 +11,14 @@
         </keep-alive>
       </transition>
     </el-container>
+    <!-- <Tool /> -->
   </el-container>
 </template>
 <script>
 import Vheader from './Vheader/'
 import Vaside from './Vaside/'
+import Tool from './Tool'
 export default {
-  components: { Vaside, Vheader }
+  components: { Vaside, Vheader, Tool }
 }
 </script>

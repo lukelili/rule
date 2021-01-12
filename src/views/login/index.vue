@@ -43,7 +43,7 @@ export default {
         const data = result.data.data
         const token = result.headers.token
         this.$store.commit('user/SET_USERINFO', [
-          { key: 'role', value: data.role },
+          { key: 'roles', value: data.roles },
           { key: 'token', value: token },
           { key: 'username', value: data.username }
         ])

@@ -1,6 +1,7 @@
 import { routes } from '@/router'
 import Layout from '@/layout'
 import http from '@/utils/request'
+import { getItem } from '@/utils/storage'
 
 const state = {
   routes: [],
@@ -18,10 +19,11 @@ const mutations = {
 }
 const actions = {
   async roleMenus(context) {
-    const result = await http.get('/rest/query/menu')
+
+    const result = await http.get(`rest/queryOne/role?_id=${getItem('roles')}`)
     if (!result) return
-    const { data } = result.data
-    const asyncRoutes = await context.dispatch('cascade', data)
+    const { code, data } = result.data
+    const asyncRoutes = await context.dispatch('cascade', data.menus)
     context.commit('SET_ROUTES', asyncRoutes)
     return asyncRoutes
   },

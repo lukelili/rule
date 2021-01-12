@@ -11,19 +11,6 @@
           <el-button :key="index" :icon="item.icon" :type="item.type" @click="operateEvent(item.event)">{{ item.label }}</el-button>
         </template>
         <el-button icon="el-icon-refresh" type="default" @click="handleRefresh">刷新</el-button>
-        <!-- 显示列 -->
-        <el-dropdown class="show-col" :hide-on-click="false">
-          <el-button type="default">
-            显示列<i class="el-icon-arrow-down el-icon--right"></i>
-          </el-button>
-          <el-dropdown-menu slot="dropdown">
-            <el-checkbox-group v-model="checkCols" @change="handleChangeShowCol">
-              <el-dropdown-item v-for="item of options.tHead" :key="item.field">
-                <el-checkbox :label="item.field">{{ item.label }}</el-checkbox>
-              </el-dropdown-item>
-            </el-checkbox-group>
-          </el-dropdown-menu>
-        </el-dropdown>
       </div>
     </div>
     <!-- 表格 -->
@@ -116,8 +103,7 @@ export default {
       page: {
         pageNumber: 1,
         pageSize: 5
-      },
-      checkCols: []
+      }
     }
   },
   watch: {
@@ -154,7 +140,6 @@ export default {
       if (!this.options) return
       this.searchData && this.$deepMatch(this.searchData, this.page)
       this.$deepMatch(this.options, this.tableOption)
-      this.checkCols = this.options.tHead.filter(item => !item.hidden).map(item => item.field)
     },
     // 操作按钮事件
     operateEvent(event) {
@@ -173,16 +158,6 @@ export default {
     // 刷新
     handleRefresh() {
       this.$emit('refresh')
-    },
-    // 要显示的列
-    handleChangeShowCol(val) {
-      const tHead = this.tableOption.tHead
-      tHead.forEach(item => {
-        this.$delete(item, 'hidden')
-        if (!this.checkCols.includes(item.field)) {
-          this.$set(item, 'hidden', true)
-        }
-      })
     }
   }
 }

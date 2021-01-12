@@ -7,15 +7,8 @@
 			<template v-slot:gender="{ data }">
 				{{ genders[data.gender] }}
 			</template>
-			<template v-slot:menus="{ data }">
-				<el-tree
-					:data="showTree(data.menus)"
-					node-key="_id"
-					:props="treeProps">
-				</el-tree>
-			</template>
-			<template v-slot:role="{ data }">
-				{{ data.role.name }}
+			<template v-slot:roles="{ data }">
+				{{ data.roles.name }}
 			</template>
 			<template v-slot:status="{ data }">
 				<el-tag :type="isEnable[data.status].type">{{ isEnable[data.status].label }}</el-tag>
@@ -26,18 +19,7 @@
   		</template>
   	</v-table>
   	<v-dialog :visible.sync="isShow" :title="title">
-  		<v-form :form-item="formItem" :formData="formData" :visible.sync="isShow" @submit="submit">
-  			<template v-slot:menus>
-  				<el-tree
-					  :data="addroutes"
-					  show-checkbox
-					  node-key="_id"
-						@check="handleTreeCheck"
-						:default-checked-keys="formData.menus"
-						:props="treeProps">
-					</el-tree>
-  			</template>
-  		</v-form>
+  		<v-form :form-item="formItem" :formData="formData" :visible.sync="isShow" @submit="submit" />
   	</v-dialog>
   </div>
 </template>
@@ -55,12 +37,12 @@ export default {
 				],
 				tHead: [
 					{ label: '后台账号', field: 'username' },
-					{ label: '账号角色', slotName: 'role' },
+					{ label: '账号角色', field: 'roles', slotName: 'roles' },
 					{ label: '真实姓名', field: 'name' },
-					{ label: '性别', slotName: 'gender' },
+					{ label: '性别', field: 'gender', slotName: 'gender' },
           { label: '手机号码', field: 'phone' },
-					{ label: '状态', slotName: 'status' },
-					{ label: '操作', slotName: 'operation', width: '160px' }
+					{ label: '状态', field: 'status', slotName: 'status' },
+					{ label: '操作', field: 'operation',slotName: 'operation', width: '160px' }
 				],
 				tableList: [],
 				loading: false
@@ -75,7 +57,7 @@ export default {
 			formItem: [
 				{ type: 'input', label: '后台账号', field: 'username', required: true },
 				{ type: 'input', label: '后台密码', field: 'password', required: true },
-				{ type: 'select', label: '账号角色', field: 'role', required: true, data: 'roles', props: {
+				{ type: 'select', label: '账号角色', field: 'roles', required: true, data: 'roles', props: {
 					label: 'name',
 					value: '_id'
 				} },
@@ -94,11 +76,8 @@ export default {
 				name: '',
         gender: 'male',
         phone: '',
-        role: '',
+        roles: '',
         status: true
-			},
-			treeProps: {
-				label: 'name'
 			}
 		}
 	},
@@ -134,7 +113,7 @@ export default {
     	this.title = '编辑账号'
 			this.$nextTick(() => {
 				this.formData = Object.assign({}, this.formData, rowData)
-				this.formData.role = rowData.role._id
+				this.formData.roles = rowData.roles._id
 			})
     	this.isShow = true
     },
@@ -150,10 +129,6 @@ export default {
 			if (!result) return
 			this.isShow = false
 			this.getTableList()
-		},
-		// 获取选中的菜单
-		handleTreeCheck(nodes, keys) {
-			this.formData.menus = keys.checkedKeys
 		},
 		showTree(data) {
 			const arr = []

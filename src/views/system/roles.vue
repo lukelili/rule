@@ -117,7 +117,7 @@ export default {
 			table.tableList = data
 			table.total = total
 			// this.$store.dispatch('global/getData', { key: 'roles', api: '/role/filter' })
-    },
+		},
 		// 添加
     handleAdd() {
     	this.curd = 'create'
@@ -144,7 +144,9 @@ export default {
     },
 		// 提交
 		async submit() {
-			const result = await this.$http.post(`/rest/${this.curd}/role`, this.formData)
+			const formData = JSON.parse(JSON.stringify(this.formData))
+			formData.menus = formData.menus.concat(this.$refs.tree.getHalfCheckedKeys())
+			const result = await this.$http.post(`/rest/${this.curd}/role`, formData)
 			if (!result) return
 			this.visible = false
 			this.getTableList()
@@ -154,7 +156,7 @@ export default {
 			this.formData.menus = keys.checkedKeys
 		},
 		setCheckedKeys(checks) {
-			this.$refs.tree.setCheckedKeys(checks)
+			this.$refs.tree && this.$refs.tree.setCheckedKeys(checks)
 		},
 		// 将一维数据转换成级联数据
 		showTree(data) {
